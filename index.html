@@ -1,49 +1,94 @@
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zona12</title>
+  <title>Zona 12</title>
 </head>
-
 <body>
+  
   <header>
-    <img src="logo.png" alt="logo de la marca zona 12">
+    <img src="logo.png" alt="Logo de la marca Zona 12">
     <nav>
       <ul>
-        <li><a href="#inicio">inicio</a></li>
-        <li><a href="#catalogo">catalogo</a></li>
-        <li><a href="#contacto">contacto</a></li>
-        <li><a href="#administrador">administrador</a></li>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#administrador">Administrador</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- SECCIÓN INICIO -->
   <section id="inicio">
     <h1>Bienvenido a Zona 12</h1>
-    <p>Estamos en la zona 12 de la ciudad de Cali colombia, donde encontraras las mejores computadoras y consolas de la
-      cuidad B).</p>
+    <p>Estamos ubicados en Cali, Colombia, donde encontrarás la mejor experiencia en cybercafé y gaming center de la ciudad.</p>
   </section>
 
+  <!-- SECCIÓN CATÁLOGO -->
   <section id="catalogo">
-    <h2>Nuestros productos y servicios</h2>
-    recuerda editar esta zona mañana.
-    agrega la targetas y continuas con ccs
+    <h2>Nuestros Servicios y Juegos</h2>
+    <div class="grid-catalogo">
+
+      <!-- Servicio 1 -->
+      <article class="tarjeta-producto">
+        <h3>Hora PC Gamer Pro</h3>
+        <p>Acceso a PC de alta gama, monitor de 144Hz y periféricos mecánicos.</p>
+        <span class="precio">$5.000 COP</span>
+        <button type="button">Reservar</button>
+      </article>
+
+      <!-- Servicio 2 -->
+      <article class="tarjeta-producto">
+        <h3>Combo Gamer (2h + Snack)</h3>
+        <p>2 horas de juego en cualquier plataforma más bebida y papas.</p>
+        <span class="precio">$12.000 COP</span>
+        <button type="button">Reservar</button>
+      </article>
+
+      <!-- Servicio 3 -->
+      <article class="tarjeta-producto">
+        <h3>Sala Consola VIP / VR</h3>
+        <p>Sillones reclinables con PS5 / Xbox o Realidad Virtual por hora.</p>
+        <span class="precio">$6.000 COP</span>
+        <button type="button">Reservar</button>
+      </article>
+
+    </div>
   </section>
 
+  <!-- SECCIÓN CONTACTO -->
   <section id="contacto">
     <h2>Contacto</h2>
-    <p>Para contactarn con nosotros, puedes hacerlo a través de nuestro formulario de contacto.</p>
-    <form action="correofalso22@gmail.com" method="post">
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required><br>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required><br>
-      <label for="mensaje">Mensaje:</label>
-      <textarea id="mensaje" name="mensaje" rows="4" required></textarea><br>
-      <input type="submit" value="Enviar">
+    <p>Para contactarte con nosotros, puedes enviarnos un mensaje a través del siguiente formulario:</p>
+    
+    <form id="form-contacto">
+      <label for="nombre">Nombre:</label><br>
+      <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required><br><br>
+
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" placeholder="tu@correo.com" required><br><br>
+
+      <label for="mensaje">Mensaje:</label><br>
+      <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿Qué deseas consultar o reservar?" required></textarea><br><br>
+
+      <button type="submit">Enviar mensaje</button>
     </form>
   </section>
-</body>
 
+  <!-- SECCIÓN ADMINISTRADOR (LOGIN) -->
+  <section id="administrador">
+    <h2>Acceso Administrador</h2>
+    <form id="form-login">
+      <label for="usuario">Usuario:</label><br>
+      <input type="text" id="usuario" name="usuario" placeholder="Usuario admin" required><br><br>
+
+      <label for="password">Contraseña:</label><br>
+      <input type="password" id="password" name="password" placeholder="********" required><br><br>
+
+      <button type="submit">Ingresar</button>
+    </form>
+  </section>
+
+</body>
 </html>

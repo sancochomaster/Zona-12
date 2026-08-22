@@ -1,4 +1,331 @@
-h1 {
-  color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+/* RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212; /* Fondo oscuro estilo gamer */
+  color: #ffffff; /* Texto claro */
+  line-height: 1.6;
+}
+/* HEADER Y NAVEGACIÓN */
+header {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between; /* Pone el logo a la izquierda y el menú a la derecha */
+  align-items: center;            /* Centra verticalmente logo y menú */
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #00ff88; /* Detalle verde neon/gamer */
+  position: sticky;              /* Hace que la barra se quede fija arriba al bajar */
+  top: 0;
+  z-index: 100;
+}
+
+/* Tamaño del logo */
+header img {
+  max-height: 80px;
+  width: auto;
+}
+
+/* Quitar los puntos de la lista ul y ponerlos en fila */
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem; /* Espacio uniforme entre cada enlace */
+}
+
+/* Estilos a los enlaces <a> */
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+/* Efecto al pasar el cursor (Hover) */
+nav a:hover {
+  color: #00ff88; /* Cambia a verde neon al pasar el mouse */
+}
+/* SECCIÓN DE INICIO (HERO) */
+#inicio {
+  min-height: 70vh; /* Ocupa el 70% del alto de la pantalla */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  
+  /* Fondo oscuro con un suave degradado gamer */
+  background: linear-gradient(180deg, rgba(26,26,26,0.8) 0%, rgba(18,18,18,1) 100%);
+}
+
+/* Título principal h1 */
+#inicio h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(0, 255, 136, 0.4); /* Resplandor verde neon */
+}
+
+/* Parrafo descriptivo */
+#inicio p {
+  font-size: 1.2rem;
+  max-width: 600px; /* Limita el ancho del texto para que no se extienda demasiado */
+  color: #ffffff;
+}
+/* ENCABEZADO DEL CATÁLOGO */
+#catalogo {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Título H2: Catálogo de Servicios */
+#catalogo h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #ffffff;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%); /* Centra el título de forma exacta */
+  margin-bottom: 1rem;
+}
+
+/* Línea decorativa verde neón debajo del H2 */
+#catalogo h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #00ff88;
+  margin: 0.5rem auto 0 auto;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.6); /* Brillo neón */
+}
+
+/* Subtítulo / Párrafo descriptivo del catálogo */
+#catalogo > p {
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem auto; /* Centra el texto y le da espacio hacia las categorías */
+  line-height: 1.5;
+}
+
+/* SUBTÍTULOS DE CATEGORÍA */
+.categoria-catalogo h3 {
+  font-size: 1.6rem;
+  color: #ffffff;
+  border-: 4px solid #066d3d;
+  padding-left: 0.8rem;
+  margin: 2.5rem 0 1.5rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+/* CONTENEDOR GRID DE TARJETAS */
+.grid-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem;
+}
+
+/* TARJETAS DE PRODUCTO (<article>) */
+.grid-tarjetas article {
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-tarjetas article:hover {
+  transform: translateY(-6px);
+  border-color: #00ff88;
+  box-shadow: 0 8px 20px rgba(0, 255, 136, 0.15);
+}
+/* SECCIÓN CONTACTO */
+#contacto {
+  padding: 4rem 2rem;
+  max-width: 600px; /* Ancho cómodo para el formulario */
+  margin: 0 auto;
+}
+
+#contacto h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+#contacto h2::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background-color: #00ff88;
+  margin: 0.5rem auto 0 auto;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+#contacto > p {
+  text-align: center;
+  color: #a0a0a0;
+  margin-bottom: 2rem;
+}
+
+/* CONTENEDOR DEL FORMULARIO */
+#form-contacto {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ETIQUETAS (LABELS) */
+#form-contacto label {
+  color: #00ff88;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* CAMPOS DE TEXTO (INPUTS Y TEXTAREA) */
+#form-contacto input[type="text"],
+#form-contacto input[type="email"],
+#form-contacto textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.4rem;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* EFECTO CUANDO EL USUARIO HACE CLIC EN UN CAMPO (FOCUS) */
+#form-contacto input:focus,
+#form-contacto textarea:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+/* BOTÓN DE ENVIAR */
+#form-contacto button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #00ff88;
+  color: #121212;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#form-contacto button:hover {
+  background-color: #00cc6a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+}
+
+/* SECCIÓN ADMINISTRADOR */
+#administrador {
+  padding: 4rem 2rem;
+  max-width: 450px; /* Más estrecho que contacto para dar aspecto de tarjeta de Login */
+  margin: 0 auto;
+}
+
+#administrador h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+#administrador h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  background-color: #00ff88;
+  margin: 0.5rem auto 1.5rem auto;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+/* TARJETA DE LOGIN */
+#form-login {
+  background-color: #1a1a1a;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ETIQUETAS */
+#form-login label {
+  color: #00ff88;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* CAMPOS DE TEXTO Y CONTRASEÑA */
+#form-login input[type="text"],
+#form-login input[type="password"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.4rem;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* FOCUS AL ESCRIBIR */
+#form-login input:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+/* BOTÓN DE INGRESAR */
+#form-login button {
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 0.5rem;
+  background-color: #00ff88;
+  color: #121212;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#form-login button:hover {
+  background-color: #00cc6a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
 }

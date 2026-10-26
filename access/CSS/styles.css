@@ -1,6 +1,10 @@
 /* ==========================================
    ESTILOS GENERALES Y RESET (VAPORWAVE)
    ========================================== */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +13,8 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #0d0221; /* Fondo violeta espacial muy oscuro */
+  background-color: #0d0221;
+  /* Fondo violeta espacial muy oscuro */
   color: #f8f8f2;
   line-height: 1.6;
 }
@@ -23,7 +28,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 2px solid #ff2a8d; /* Línea fucsia neón */
+  border-bottom: 2px solid #ff2a8d;
+  /* Línea fucsia neón */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -50,7 +56,8 @@ nav a {
 }
 
 nav a:hover {
-  color: #05d9e8; /* Cian eléctrico al pasar el mouse */
+  color: #05d9e8;
+  /* Cian eléctrico al pasar el mouse */
   text-shadow: 0 0 10px rgba(5, 217, 232, 0.6);
 }
 
@@ -59,13 +66,27 @@ nav a:hover {
    ========================================== */
 #inicio {
   min-height: 70vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(230px, 300px) minmax(0, 620px) minmax(230px, 300px);
+  grid-template-areas: "izq centro der";
   justify-content: center;
   align-items: center;
+  gap: 2rem;
   text-align: center;
-  padding: 2rem;
-  background: linear-gradient(180deg, rgba(21,8,43,0.9) 0%, rgba(13,2,33,1) 100%);
+  padding: 3rem 2rem;
+  background: linear-gradient(180deg, rgba(21, 8, 43, 0.9) 0%, rgba(13, 2, 33, 1) 100%);
+}
+
+.tarjeta-gta {
+  grid-area: izq;
+}
+
+.hero-contenido {
+  grid-area: centro;
+}
+
+.tarjeta-noticia {
+  grid-area: der;
 }
 
 #inicio h1 {
@@ -75,10 +96,194 @@ nav a:hover {
   text-shadow: 0 0 20px rgba(255, 42, 141, 0.7), 0 0 40px rgba(5, 217, 232, 0.4);
 }
 
+/* Segunda parte del título: "// El Núcleo Gamer de Cali" */
+#inicio h1 span {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #05d9e8;
+  text-shadow: 0 0 12px rgba(5, 217, 232, 0.7);
+  margin-top: 0.6rem;
+}
+
 #inicio p {
   font-size: 1.2rem;
   max-width: 600px;
+  margin: 0 auto;
   color: #b1a7d8;
+}
+
+/* ==========================================
+   BOTONES DE ACCIÓN DEL HERO (CTA)
+   ========================================== */
+.cta-inicio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cta-inicio a {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.9rem 2rem;
+  border-radius: 30px;
+  transition: transform 0.25s ease, box-shadow 0.3s ease,
+    background 0.3s ease, color 0.3s ease;
+}
+
+.cta-principal {
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 42, 141, 0.5);
+}
+
+.cta-principal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(255, 42, 141, 0.85);
+}
+
+.cta-secundario {
+  background: transparent;
+  color: #05d9e8;
+  border: 2px solid #05d9e8;
+}
+
+.cta-secundario:hover {
+  background: rgba(5, 217, 232, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(5, 217, 232, 0.5);
+}
+
+/* ==========================================
+   BARRA RÁPIDA DE ESTADÍSTICAS
+   ========================================== */
+.stats-inicio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 2.5rem;
+}
+
+.stats-inicio li {
+  color: #f8f8f2;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid #32145a;
+  border-radius: 30px;
+  background-color: rgba(25, 9, 51, 0.6);
+  box-shadow: 0 0 12px rgba(255, 42, 141, 0.15);
+}
+
+/* ==========================================
+   TARJETAS LATERALES DEL HERO
+   ========================================== */
+.tarjeta-lateral {
+  background-color: #190933;
+  border: 1px solid #32145a;
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-lateral:hover {
+  transform: translateY(-6px);
+  border-color: #05d9e8;
+  box-shadow: 0 8px 25px rgba(5, 217, 232, 0.25);
+}
+
+.tarjeta-lateral img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.tarjeta-texto {
+  padding: 1rem 1.2rem 1.3rem;
+}
+
+.tarjeta-lateral .tarjeta-texto h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.tarjeta-lateral .tarjeta-texto p {
+  color: #b1a7d8;
+  font-size: 0.85rem;
+  max-width: none;
+}
+
+/* Etiqueta de la noticia */
+.etiqueta-noticia {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #0d0221;
+  background: linear-gradient(90deg, #ff2a8d, #05d9e8);
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+}
+
+/* Contador de la cuenta atrás */
+.contador {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.contador-item {
+  flex: 1;
+  background-color: #0d0221;
+  border: 1px solid #32145a;
+  border-radius: 8px;
+  padding: 0.5rem 0.15rem;
+  text-align: center;
+}
+
+.contador-item span {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #05d9e8;
+}
+
+.contador-item small {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b1a7d8;
+}
+
+/* ==========================================
+   RESPONSIVE DEL HERO
+   ========================================== */
+@media (max-width: 1100px) {
+  #inicio {
+    grid-template-columns: 1fr;
+    grid-template-areas: "centro" "izq" "der";
+    padding: 3rem 1.5rem;
+  }
+
+  .tarjeta-lateral {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
 }
 
 /* ==========================================
@@ -115,19 +320,82 @@ nav a:hover {
   box-shadow: 0 0 12px rgba(255, 42, 141, 0.7);
 }
 
-#catalogo > p {
+#catalogo>p {
   text-align: center;
   color: #b1a7d8;
   font-size: 1.1rem;
   max-width: 600px;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto 2rem auto;
+}
+
+/* ==========================================
+   PESTAÑAS DE CATEGORÍA (FILTROS)
+   ========================================== */
+.filtros-catalogo {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.filtro-btn {
+  background-color: #15082b;
+  color: #f8f8f2;
+  border: 1px solid #32145a;
+  border-radius: 30px;
+  padding: 0.7rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.filtro-btn:hover {
+  color: #05d9e8;
+  border-color: #05d9e8;
+}
+
+.filtro-btn.activo {
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 42, 141, 0.5);
+}
+
+/* ==========================================
+   TRANSICIÓN SUAVE ENTRE CATEGORÍAS
+   ========================================== */
+.categoria-catalogo {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* Ocultar SIN transición (display no es animable) */
+.categoria-catalogo.categoria-oculta {
+  display: none;
+}
+
+/* Estados usados por JS para animar la salida y la entrada */
+.categoria-catalogo.categoria-saliendo {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+
+.categoria-catalogo.categoria-entrando {
+  opacity: 0;
+  transform: translateY(15px);
 }
 
 /* SUBTÍTULOS DE CATEGORÍA */
 .categoria-catalogo h3 {
   font-size: 1.6rem;
   color: #ffffff;
-  border-left: 4px solid #ff2a8d; /* Acento fucsia */
+  border-left: 4px solid #ff2a8d;
+  /* Acento fucsia */
   padding-left: 0.8rem;
   margin: 2.5rem 0 1.5rem 0;
   width: 100%;
@@ -142,7 +410,8 @@ nav a:hover {
 
 /* TARJETAS DE PRODUCTO */
 .grid-tarjetas article {
-  background-color: #190933; /* Violeta oscuro de tarjeta */
+  background-color: #190933;
+  /* Violeta oscuro de tarjeta */
   border: 1px solid #32145a;
   border-radius: 12px;
   padding: 1.5rem;
@@ -154,7 +423,8 @@ nav a:hover {
 
 .grid-tarjetas article:hover {
   transform: translateY(-6px);
-  border-color: #05d9e8; /* Borde cian al pasar el mouse */
+  border-color: #05d9e8;
+  /* Borde cian al pasar el mouse */
   box-shadow: 0 8px 25px rgba(5, 217, 232, 0.25);
 }
 
@@ -171,7 +441,8 @@ nav a:hover {
 }
 
 .grid-tarjetas article p strong {
-  color: #ff2a8d; /* Precios en fucsia destacado */
+  color: #ff2a8d;
+  /* Precios en fucsia destacado */
 }
 
 /* ==========================================
@@ -197,7 +468,7 @@ nav a:hover {
   margin-bottom: 0.5rem;
 }
 
-#contacto > p {
+#contacto>p {
   text-align: center;
   color: #b1a7d8;
   margin-bottom: 2rem;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,72 +24,123 @@
 
   <!-- SECCIÓN INICIO -->
   <section id="inicio">
-    <h1>Bienvenido a Zona 12</h1>
-    <p>Estamos ubicados en Cali, Colombia, donde encontrarás la mejor experiencia en cybercafé y gaming center de la ciudad.</p>
+
+    <!-- TARJETA LATERAL IZQUIERDA: CUENTA ATRÁS GTA 6 -->
+    <article class="tarjeta-lateral tarjeta-gta">
+      <img src="access/imagenes/gta6.jpg" alt="GTA 6">
+      <div class="tarjeta-texto">
+        <h3>GTA 6</h3>
+        <p>Cuenta atrás para el lanzamiento</p>
+        <div class="contador">
+          <div class="contador-item"><span id="contador-dias">00</span><small>Días</small></div>
+          <div class="contador-item"><span id="contador-horas">00</span><small>Horas</small></div>
+          <div class="contador-item"><span id="contador-min">00</span><small>Min</small></div>
+          <div class="contador-item"><span id="contador-seg">00</span><small>Seg</small></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- CONTENIDO CENTRAL -->
+    <div class="hero-contenido">
+      <h1>ZONA 12 <span>// El Núcleo Gamer de Cali</span></h1>
+      <p class="tagline">PCs de alta gama, consolas de última generación y el mejor ambiente cyberpunk para tus
+        partidas.
+        Entra al juego.</p>
+
+      <!-- BOTONES DE ACCIÓN (CTA) -->
+      <div class="cta-inicio">
+        <a class="cta-principal" href="#catalogo">Ver Catálogo</a>
+        <a class="cta-secundario" href="#contacto">Reserva / Contacto</a>
+      </div>
+
+      <!-- BARRA RÁPIDA DE ESTADÍSTICAS -->
+      <ul class="stats-inicio">
+        <li>⚡ 1 Gbps de Fibra Óptica</li>
+        <li>💻 PCs RTX de última generación</li>
+        <li>🎮 Zonas de Consolas exclusivas</li>
+      </ul>
+    </div>
+
+    <!-- TARJETA LATERAL DERECHA: NOTICIA GAMER ALEATORIA -->
+    <article class="tarjeta-lateral tarjeta-noticia">
+      <img src="access/imagenes/noticia-gamer.jpg" alt="Noticia del mundo gamer">
+      <div class="tarjeta-texto">
+        <span class="etiqueta-noticia">Noticia gamer</span>
+        <h3 id="noticia-titulo">Cargando noticia...</h3>
+        <p id="noticia-texto">Buscando las últimas novedades del mundo gamer.</p>
+      </div>
+    </article>
+
   </section>
-  
 
- <!-- SECCIÓN CATÁLOGO -->
-<section id="catalogo">
-  <h2>Catálogo de Servicios</h2>
-  <p>En nuestro catálogo encontrarás todos los servicios y equipos que tenemos disponibles en Zona 12.</p>
 
-  <!-- CATEGORÍA 1: COMPUTADORAS -->
-  <div class="categoria-catalogo">
-    <h3>Computadoras</h3>
-    
-    <div class="grid-tarjetas">
-      <article>
-        <h4>Alquiler por Hora (PC Gamer)</h4>
-        <p>Acceso a computadores de alta gama con monitores de 144Hz para juego competitivo y casual.</p>
-        <p><strong>Precio:</strong> $2.500 / hora</p>
-      </article>
+  <!-- SECCIÓN CATÁLOGO -->
+  <section id="catalogo">
+    <h2>Catálogo de Servicios</h2>
+    <p>En nuestro catálogo encontrarás todos los servicios y equipos que tenemos disponibles en Zona 12.</p>
 
-      <article>
-        <h4>Pase Libre Universitario</h4>
-        <p>Uso de PC para trabajos académicos, internet de alta velocidad e impresiones.</p>
-        <p><strong>Precio:</strong> $20.000 / día</p>
-      </article>
-
-      <article>
-        <h4>Streaming & Content Room</h4>
-        <p>Espacio equipado con cámara, micrófono profesional y PC para transmitir en vivo.</p>
-        <p><strong>Precio:</strong> $3.000 / hora</p>
-      </article>
+    <!-- PESTAÑAS PARA CAMBIAR DE CATEGORÍA -->
+    <div class="filtros-catalogo">
+      <button type="button" class="filtro-btn activo" data-categoria="computadoras">Computadoras</button>
+      <button type="button" class="filtro-btn" data-categoria="consolas">Consolas</button>
     </div>
-  </div>
 
-  <!-- CATEGORÍA 2: CONSOLAS -->
-  <div class="categoria-catalogo">
-    <h3>Consolas</h3>
-    
-    <div class="grid-tarjetas">
-      <article>
-        <h4>Estación PS5 / Xbox Series X</h4>
-        <p>Sillas ergonómicas, pantallas 4K y mandos de última generación.</p>
-        <p><strong>Precio:</strong> $3.500 / hora</p>
-      </article>
+    <!-- CATEGORÍA 1: COMPUTADORAS -->
+    <div class="categoria-catalogo" data-categoria="computadoras">
+      <h3>Computadoras</h3>
 
-      <article>
-        <h4>Zona Multiplayer (4 Controles)</h4>
-        <p>Ideal para jugar en grupo títulos locales de peleas, deportes o carreras.</p>
-        <p><strong>Precio:</strong> $3.000 / hora por persona</p>
-      </article>
+      <div class="grid-tarjetas">
+        <article>
+          <h4>Alquiler por Hora (PC Gamer)</h4>
+          <p>Acceso a computadores de alta gama con monitores de 144Hz para juego competitivo y casual.</p>
+          <p><strong>Precio:</strong> $2.500 / hora</p>
+        </article>
 
-      <article>
-        <h4>Torneos y Competencias</h4>
-        <p>Inscripción a torneos semanales con premios y acceso a la consola de competencia.</p>
-        <p><strong>Precio:</strong> $7.000 / evento</p>
-      </article>
+        <article>
+          <h4>Pase Libre Universitario</h4>
+          <p>Uso de PC para trabajos académicos, internet de alta velocidad e impresiones.</p>
+          <p><strong>Precio:</strong> $20.000 / día</p>
+        </article>
+
+        <article>
+          <h4>Streaming & Content Room</h4>
+          <p>Espacio equipado con cámara, micrófono profesional y PC para transmitir en vivo.</p>
+          <p><strong>Precio:</strong> $3.000 / hora</p>
+        </article>
+      </div>
     </div>
-  </div>
-</section>
+
+    <!-- CATEGORÍA 2: CONSOLAS -->
+    <div class="categoria-catalogo categoria-oculta" data-categoria="consolas">
+      <h3>Consolas</h3>
+
+      <div class="grid-tarjetas">
+        <article>
+          <h4>Estación PS5 / Xbox Series X</h4>
+          <p>Sillas ergonómicas, pantallas 4K y mandos de última generación.</p>
+          <p><strong>Precio:</strong> $3.500 / hora</p>
+        </article>
+
+        <article>
+          <h4>Zona Multiplayer (4 Controles)</h4>
+          <p>Ideal para jugar en grupo títulos locales de peleas, deportes o carreras.</p>
+          <p><strong>Precio:</strong> $3.000 / hora por persona</p>
+        </article>
+
+        <article>
+          <h4>Torneos y Competencias</h4>
+          <p>Inscripción a torneos semanales con premios y acceso a la consola de competencia.</p>
+          <p><strong>Precio:</strong> $7.000 / evento</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
   <!-- SECCIÓN CONTACTO -->
   <section id="contacto">
     <h2>Contacto</h2>
     <p>Para contactarte con nosotros, puedes enviarnos un mensaje a través del siguiente formulario:</p>
-    
+
     <form id="form-contacto">
       <label for="nombre">Nombre:</label><br>
       <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required><br><br>
@@ -97,7 +149,8 @@
       <input type="email" id="email" name="email" placeholder="tu@correo.com" required><br><br>
 
       <label for="mensaje">Mensaje:</label><br>
-      <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿Qué deseas consultar o reservar?" required></textarea><br><br>
+      <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿Qué deseas consultar o reservar?"
+        required></textarea><br><br>
 
       <button type="submit">Enviar mensaje</button>
     </form>
@@ -116,6 +169,7 @@
       <button type="submit">Ingresar</button>
     </form>
   </section>
- <script src="access/js/main.js"></script>
+  <script src="access/js/main.js"></script>
 </body>
+
 </html>

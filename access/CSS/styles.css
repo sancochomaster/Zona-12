@@ -1,65 +1,265 @@
-/* CAMBIO AL ESTILO VAPORWAVE / MORADO FUTURISTA */
+/* ==========================================
+   ESTILOS GENERALES Y RESET (VAPORWAVE)
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  background-color: #0d0221; /* Fondo violeta/azul espacial muy oscuro */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0d0221; /* Fondo violeta espacial muy oscuro */
   color: #f8f8f2;
+  line-height: 1.6;
 }
 
-/* Header con toque vaporwave */
+/* ==========================================
+   HEADER Y NAVEGACIÓN
+   ========================================== */
 header {
   background-color: #15082b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
   border-bottom: 2px solid #ff2a8d; /* Línea fucsia neón */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(255, 42, 141, 0.2);
 }
 
-/* Enlaces y efectos hover */
+header img {
+  max-height: 50px;
+  width: auto;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: #f8f8f2;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
 nav a:hover {
   color: #05d9e8; /* Cian eléctrico al pasar el mouse */
+  text-shadow: 0 0 10px rgba(5, 217, 232, 0.6);
 }
 
-/* Títulos principales con resplandor fucsia/morado */
+/* ==========================================
+   SECCIÓN INICIO (HERO)
+   ========================================== */
+#inicio {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, rgba(21,8,43,0.9) 0%, rgba(13,2,33,1) 100%);
+}
+
 #inicio h1 {
-  text-shadow: 0 0 20px rgba(255, 42, 141, 0.6);
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 42, 141, 0.7), 0 0 40px rgba(5, 217, 232, 0.4);
 }
 
-/* Líneas decorativas de los títulos */
+#inicio p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  color: #b1a7d8;
+}
+
+/* ==========================================
+   SECCIÓN CATÁLOGO
+   ========================================== */
+#catalogo {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#catalogo h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #ffffff;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 1rem;
+}
+
+/* Línea decorativa vaporwave en los títulos principales */
 #catalogo h2::after,
 #contacto h2::after,
 #administrador h2::after {
-  background: linear-gradient(90deg, #ff2a8d, #05d9e8); /* Degradado vaporwave */
+  content: '';
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff2a8d, #05d9e8);
+  margin: 0.5rem auto 0 auto;
+  border-radius: 2px;
   box-shadow: 0 0 12px rgba(255, 42, 141, 0.7);
 }
 
-/* Bordes y detalles de las tarjetas y subtítulos */
-.categoria-catalogo h3 {
-  border-left: 4px solid #ff2a8d;
+#catalogo > p {
+  text-align: center;
+  color: #b1a7d8;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem auto;
 }
 
+/* SUBTÍTULOS DE CATEGORÍA */
+.categoria-catalogo h3 {
+  font-size: 1.6rem;
+  color: #ffffff;
+  border-left: 4px solid #ff2a8d; /* Acento fucsia */
+  padding-left: 0.8rem;
+  margin: 2.5rem 0 1.5rem 0;
+  width: 100%;
+}
+
+/* CUADRÍCULA DE TARJETAS (GRID) */
+.grid-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem;
+}
+
+/* TARJETAS DE PRODUCTO */
 .grid-tarjetas article {
-  background-color: #190933; /* Fondo de tarjeta en violeta oscuro */
+  background-color: #190933; /* Violeta oscuro de tarjeta */
   border: 1px solid #32145a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .grid-tarjetas article:hover {
+  transform: translateY(-6px);
   border-color: #05d9e8; /* Borde cian al pasar el mouse */
-  box-shadow: 0 8px 25px rgba(5, 217, 232, 0.2);
+  box-shadow: 0 8px 25px rgba(5, 217, 232, 0.25);
 }
 
-/* Precios y destaques */
-.grid-tarjetas article p strong,
-#form-contacto label,
-#form-login label {
+.grid-tarjetas article h4 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+.grid-tarjetas article p {
+  color: #b1a7d8;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.grid-tarjetas article p strong {
+  color: #ff2a8d; /* Precios en fucsia destacado */
+}
+
+/* ==========================================
+   SECCIONES CONTACTO Y ADMINISTRADOR
+   ========================================== */
+#contacto {
+  padding: 4rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#administrador {
+  padding: 4rem 2rem;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+#contacto h2,
+#administrador h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+#contacto > p {
+  text-align: center;
+  color: #b1a7d8;
+  margin-bottom: 2rem;
+}
+
+/* FORMULARIOS (CONTACTO Y LOGIN) */
+#form-contacto,
+#form-login {
+  background-color: #15082b;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  border: 1px solid #32145a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+label {
   color: #ff2a8d;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
 }
 
-/* Botones con estilo vaporwave */
-#form-contacto button,
-#form-login button {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  background-color: #0d0221;
+  border: 1px solid #32145a;
+  border-radius: 8px;
+  color: #f8f8f2;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #05d9e8;
+  box-shadow: 0 0 10px rgba(5, 217, 232, 0.4);
+}
+
+/* BOTONES VAPORWAVE */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.9rem;
   background: linear-gradient(90deg, #ff2a8d, #b537f2);
   color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-#form-contacto button:hover,
-#form-login button:hover {
-  background: linear-gradient(90deg, #ff147e, #a21fe6);
+button[type="submit"]:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(255, 42, 141, 0.5);
 }

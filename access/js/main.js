@@ -156,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (contenedorMensajesAdmin) {
                     contenedorMensajesAdmin.style.display = 'block';
                     cargarMensajesAdmin();
+                    cargarReservasAdmin();
                 }
             } else {
                 alert("Usuario o contraseña incorrectos.");
@@ -181,6 +182,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
         }
+    }
+
+    // Lista las reservas del catálogo guardadas en localStorage
+    function cargarReservasAdmin() {
+        const listaReservas = document.getElementById('lista-reservas');
+        if (!listaReservas) return;
+
+        const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
+        const reservasGuardadas = JSON.parse(localStorage.getItem('reservasZona12')) || [];
+
+        if (reservasGuardadas.length === 0) {
+            listaReservas.innerHTML = '<p style="color: #b1a7d8;">No hay reservas registradas todavía.</p>';
+            return;
+        }
+
+        listaReservas.innerHTML = reservasGuardadas.map((reserva, index) => {
+            const filas = reserva.items.map(item => `
+                <p style="color: #f8f8f2; margin: 0.3rem 0;">
+                    <strong style="color: #05d9e8;">${item.tipo}:</strong> ${item.nombre}${item.precio ? ' — ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}
+                </p>
+            `).join('');
+
+            const total = reserva.items.reduce((suma, item) => suma + (item.precio || 0), 0);
+
+            return `
+                <div style="background: #0d0221; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #32145a;">
+                    <p style="color: #ff2a8d; font-weight: bold;">Reserva #${index + 1} — ${reserva.categoria}</p>
+                    ${filas}
+                    <p style="color: #f8f8f2; margin-top: 0.5rem;"><strong>Total:</strong> ${formatearPrecio(total)}</p>
+                    <small style="color: #b1a7d8;">Fecha: ${reserva.fecha}</small>
+                </div>
+            `;
+        }).join('');
     }
 
     // --- 5. BOTÓN FLOTANTE "VOLVER ARRIBA" ---

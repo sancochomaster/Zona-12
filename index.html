@@ -97,14 +97,19 @@
       <h3>Estaciones de PC</h3>
       <div class="grid-tarjetas" id="grid-pcs"></div>
 
-      <!-- SNACKS Y BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
-      <h3>Snacks y Bebidas</h3>
+      <!-- BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Bebidas</h3>
+      <div class="grid-tarjetas" id="grid-bebidas"></div>
+
+      <!-- SNACKS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Snacks</h3>
       <div class="grid-tarjetas" id="grid-snacks"></div>
 
       <!-- RESUMEN Y CONFIRMACIÓN DE LA RESERVA -->
       <div class="panel-reserva" data-categoria-panel="computadoras">
         <h3>Arma tu Combo</h3>
         <p class="texto-reserva">Selecciona lo que quieras para armar tu combo.</p>
+        <p class="total-reserva"></p>
         <button type="button" class="btn-confirmar" disabled>Confirmar Reserva</button>
         <div class="confirmacion-reserva"></div>
       </div>
@@ -122,14 +127,19 @@
       <h3>Servicios y Torneos</h3>
       <div class="grid-tarjetas" id="grid-servicios-consola"></div>
 
-      <!-- SNACKS Y BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
-      <h3>Snacks y Bebidas</h3>
+      <!-- BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Bebidas</h3>
+      <div class="grid-tarjetas" id="grid-bebidas-consolas"></div>
+
+      <!-- SNACKS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Snacks</h3>
       <div class="grid-tarjetas" id="grid-snacks-consolas"></div>
 
       <!-- RESUMEN Y CONFIRMACIÓN DE LA RESERVA -->
       <div class="panel-reserva" data-categoria-panel="consolas">
         <h3>Arma tu Combo</h3>
         <p class="texto-reserva">Selecciona lo que quieras para armar tu combo.</p>
+        <p class="total-reserva"></p>
         <button type="button" class="btn-confirmar" disabled>Confirmar Reserva</button>
         <div class="confirmacion-reserva"></div>
       </div>
@@ -168,6 +178,15 @@
 
       <button type="submit">Ingresar</button>
     </form>
+
+    <!-- PANEL DE ADMIN (SE MUESTRA DESPUÉS DE INICIAR SESIÓN) -->
+    <div id="mensajes-admin">
+      <h3>Mensajes de Contacto</h3>
+      <div id="lista-mensajes"></div>
+
+      <h3>Reservas del Catálogo</h3>
+      <div id="lista-reservas"></div>
+    </div>
   </section>
   <script src="access/js/main.js"></script>
   <script src="access/js/catalogo.js"></script>

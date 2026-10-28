@@ -38,7 +38,6 @@
             titulo: 'PC #01',
             estado: 'Disponible',
             precio: 2500,
-            sufijo: '/ hora',
             specs: [
                 { etiqueta: 'GPU', valor: 'RTX 4060' },
                 { etiqueta: 'CPU', valor: 'Ryzen 5 5600X' },
@@ -51,7 +50,6 @@
             titulo: 'PC #02',
             estado: 'Disponible',
             precio: 2500,
-            sufijo: '/ hora',
             specs: [
                 { etiqueta: 'GPU', valor: 'RTX 4070' },
                 { etiqueta: 'CPU', valor: 'Ryzen 7 5800X' },
@@ -64,7 +62,6 @@
             titulo: 'PC #03',
             estado: 'Ocupada',
             precio: 2500,
-            sufijo: '/ hora',
             specs: [
                 { etiqueta: 'GPU', valor: 'RTX 3080' },
                 { etiqueta: 'CPU', valor: 'Intel i7-12700K' },
@@ -77,7 +74,6 @@
             titulo: 'PC #04',
             estado: 'Disponible',
             precio: 3000,
-            sufijo: '/ hora',
             specs: [
                 { etiqueta: 'GPU', valor: 'RTX 4090' },
                 { etiqueta: 'CPU', valor: 'Intel i9-13900K' },
@@ -90,7 +86,6 @@
             titulo: 'PC #05',
             estado: 'Ocupada',
             precio: 2500,
-            sufijo: '/ hora',
             specs: [
                 { etiqueta: 'GPU', valor: 'RTX 3060' },
                 { etiqueta: 'CPU', valor: 'Ryzen 5 3600' },
@@ -161,23 +156,49 @@
         }
     ];
 
-    // Snacks y bebidas (el mismo array se reutiliza en las dos categorías)
+    // Bebidas (solo se puede elegir una)
+    const bebidas = [
+        { id: 'be-1', titulo: 'Gaseosa', precio: 4500 },
+        { id: 'be-2', titulo: 'Café', precio: 3500 },
+        { id: 'be-3', titulo: 'Botella de Agua', precio: 2000 }
+    ];
+
+    // Snacks (se pueden elegir varios; el mismo array se reutiliza en las dos categorías)
     const snacks = [
         { id: 'sn-1', titulo: 'Maní', precio: 3000 },
-        { id: 'sn-2', titulo: 'Gaseosa', precio: 4500 },
-        { id: 'sn-3', titulo: 'Café', precio: 3500 },
-        { id: 'sn-4', titulo: 'Papas Fritas', precio: 4000 },
-        { id: 'sn-5', titulo: 'Chocolatina', precio: 2500 }
+        { id: 'sn-2', titulo: 'Papas Fritas', precio: 4000 },
+        { id: 'sn-3', titulo: 'Chocolatina', precio: 2500 }
     ];
 
     // --- Grupos de selección: cada uno se pinta en su contenedor ---
+    // 'multiple: true' permite elegir varios ítems (snacks); sin él solo se elige uno.
+    // 'requiere' indica las claves de otros grupos que deben estar elegidas antes
+    // (bebidas y snacks solo se pueden pedir después de elegir el servicio y su PC/consola).
     const grupos = [
-        { clave: 'servicioPC', categoria: 'computadoras', contenedor: 'grid-servicios-pc', etiqueta: 'Servicio', items: serviciosPC, seleccionado: null },
-        { clave: 'pc', categoria: 'computadoras', contenedor: 'grid-pcs', etiqueta: 'PC', items: computadoras, seleccionado: null },
-        { clave: 'snackPc', categoria: 'computadoras', contenedor: 'grid-snacks', etiqueta: 'Snack', items: snacks, seleccionado: null },
-        { clave: 'estacionConsola', categoria: 'consolas', contenedor: 'grid-consolas', etiqueta: 'Estación', items: consolas, seleccionado: null },
-        { clave: 'servicioConsola', categoria: 'consolas', contenedor: 'grid-servicios-consola', etiqueta: 'Servicio', items: serviciosConsola, seleccionado: null },
-        { clave: 'snackConsola', categoria: 'consolas', contenedor: 'grid-snacks-consolas', etiqueta: 'Snack', items: snacks, seleccionado: null }
+        { clave: 'servicioPC', categoria: 'computadoras', contenedor: 'grid-servicios-pc', etiqueta: 'Servicio', items: serviciosPC, seleccionados: [] },
+        { clave: 'pc', categoria: 'computadoras', contenedor: 'grid-pcs', etiqueta: 'PC', items: computadoras, seleccionados: [] },
+        {
+            clave: 'bebidaPc', categoria: 'computadoras', contenedor: 'grid-bebidas', etiqueta: 'Bebida', items: bebidas, seleccionados: [],
+            requiere: ['servicioPC', 'pc'],
+            aviso: 'Para elegir una bebida primero debes seleccionar un Servicio de PC y una PC.'
+        },
+        {
+            clave: 'snackPc', categoria: 'computadoras', contenedor: 'grid-snacks', etiqueta: 'Snack', items: snacks, seleccionados: [], multiple: true,
+            requiere: ['servicioPC', 'pc'],
+            aviso: 'Para elegir snacks primero debes seleccionar un Servicio de PC y una PC.'
+        },
+        { clave: 'estacionConsola', categoria: 'consolas', contenedor: 'grid-consolas', etiqueta: 'Estación', items: consolas, seleccionados: [] },
+        { clave: 'servicioConsola', categoria: 'consolas', contenedor: 'grid-servicios-consola', etiqueta: 'Servicio', items: serviciosConsola, seleccionados: [] },
+        {
+            clave: 'bebidaConsola', categoria: 'consolas', contenedor: 'grid-bebidas-consolas', etiqueta: 'Bebida', items: bebidas, seleccionados: [],
+            requiere: ['servicioConsola', 'estacionConsola'],
+            aviso: 'Para elegir una bebida primero debes seleccionar un Servicio de Consola y una Estación de Consola.'
+        },
+        {
+            clave: 'snackConsola', categoria: 'consolas', contenedor: 'grid-snacks-consolas', etiqueta: 'Snack', items: snacks, seleccionados: [], multiple: true,
+            requiere: ['servicioConsola', 'estacionConsola'],
+            aviso: 'Para elegir snacks primero debes seleccionar un Servicio de Consola y una Estación de Consola.'
+        }
     ];
 
     // Pinta un grupo completo de tarjetas en su contenedor
@@ -217,13 +238,16 @@
         }).join('');
     }
 
-    // Marca visualmente la tarjeta elegida dentro de un grupo
+    // ¿Está este ítem elegido dentro del grupo?
+    const estaSeleccionado = (grupo, id) => grupo.seleccionados.some(item => String(item.id) === String(id));
+
+    // Marca visualmente las tarjetas elegidas dentro de un grupo
     function marcarSeleccion(grupo) {
         const contenedor = document.getElementById(grupo.contenedor);
         if (!contenedor) return;
 
         contenedor.querySelectorAll('.tarjeta-seleccion').forEach(tarjeta => {
-            const activa = grupo.seleccionado && String(grupo.seleccionado.id) === tarjeta.dataset.id;
+            const activa = estaSeleccionado(grupo, tarjeta.dataset.id);
             tarjeta.classList.toggle('seleccionada', activa);
 
             const boton = tarjeta.querySelector('.btn-seleccion');
@@ -244,34 +268,77 @@
             const tarjeta = evento.target.closest('.tarjeta-seleccion');
             if (!tarjeta || tarjeta.classList.contains('ocupada')) return;
 
-            const id = tarjeta.dataset.id;
+            // Si el grupo exige requisitos (bebidas/snacks), hay que cumplirlos antes
+            if (grupo.requiere && !requisitosCumplidos(grupo)) {
+                alert(grupo.aviso || 'Primero debes completar tu selección.');
+                return;
+            }
 
-            // Si se pulsa de nuevo el mismo ítem, se deselecciona
-            grupo.seleccionado = (grupo.seleccionado && String(grupo.seleccionado.id) === id)
-                ? null
-                : grupo.items.find(item => String(item.id) === id);
+            const id = tarjeta.dataset.id;
+            const item = grupo.items.find(i => String(i.id) === id);
+
+            if (estaSeleccionado(grupo, id)) {
+                // Ya estaba elegido: se quita
+                grupo.seleccionados = grupo.seleccionados.filter(i => String(i.id) !== id);
+            } else if (grupo.multiple) {
+                // Varios permitidos: se agrega a la lista
+                grupo.seleccionados.push(item);
+            } else {
+                // Selección única: reemplaza a la anterior
+                grupo.seleccionados = [item];
+            }
 
             marcarSeleccion(grupo);
+            limpiarGruposInvalidos(grupo.categoria);
             actualizarPaneles();
         });
     }
 
     const gruposDeCategoria = (categoria) => grupos.filter(g => g.categoria === categoria);
 
-    // Refresca el texto y el botón del panel de cada categoría
+    // ¿Ya está elegido todo lo que este grupo necesita?
+    function requisitosCumplidos(grupo) {
+        return grupo.requiere.every(clave => {
+            const requisito = grupos.find(g => g.clave === clave);
+            return requisito && requisito.seleccionados.length > 0;
+        });
+    }
+
+    // Si un grupo pierde sus requisitos (se quita la PC o el servicio), se deselecciona
+    function limpiarGruposInvalidos(categoria) {
+        gruposDeCategoria(categoria)
+            .filter(g => g.requiere && g.seleccionados.length > 0 && !requisitosCumplidos(g))
+            .forEach(g => {
+                g.seleccionados = [];
+                marcarSeleccion(g);
+            });
+    }
+
+    // Suma el precio de todos los ítems elegidos en una lista de grupos
+    const totalDeGrupos = (listaGrupos) => listaGrupos.reduce((suma, g) =>
+        suma + g.seleccionados.reduce((subtotal, item) => subtotal + (item.precio || 0), 0), 0);
+
+    // Refresca el texto, el total y el botón del panel de cada categoría
     function actualizarPaneles() {
         document.querySelectorAll('.panel-reserva').forEach(panel => {
-            const seleccionados = gruposDeCategoria(panel.dataset.categoriaPanel).filter(g => g.seleccionado);
+            const seleccionados = gruposDeCategoria(panel.dataset.categoriaPanel).filter(g => g.seleccionados.length > 0);
 
             const texto = panel.querySelector('.texto-reserva');
+            const totalEl = panel.querySelector('.total-reserva');
             const boton = panel.querySelector('.btn-confirmar');
 
             if (texto) {
                 texto.textContent = seleccionados.length === 0
                     ? 'Selecciona lo que quieras para armar tu combo.'
                     : 'Tu selección: ' + seleccionados
-                        .map(g => `${g.etiqueta}: ${g.seleccionado.titulo}`)
+                        .map(g => `${g.etiqueta}: ${g.seleccionados.map(i => i.titulo).join(', ')}`)
                         .join(' + ');
+            }
+
+            if (totalEl) {
+                totalEl.textContent = seleccionados.length === 0
+                    ? ''
+                    : 'Total: ' + formatearPrecio(totalDeGrupos(seleccionados));
             }
 
             if (boton) {
@@ -283,16 +350,16 @@
     // Guarda la reserva en localStorage y muestra la confirmación en pantalla
     function confirmarReserva(panel) {
         const categoria = panel.dataset.categoriaPanel;
-        const seleccionados = gruposDeCategoria(categoria).filter(g => g.seleccionado);
+        const seleccionados = gruposDeCategoria(categoria).filter(g => g.seleccionados.length > 0);
 
         const reserva = {
             categoria,
-            items: seleccionados.map(g => ({
+            items: seleccionados.flatMap(g => g.seleccionados.map(item => ({
                 tipo: g.etiqueta,
-                nombre: g.seleccionado.titulo,
-                precio: g.seleccionado.precio || 0,
-                sufijo: g.seleccionado.sufijo || ''
-            })),
+                nombre: item.titulo,
+                precio: item.precio || 0,
+                sufijo: item.sufijo || ''
+            }))),
             fecha: new Date().toLocaleString('es-CO')
         };
 
@@ -304,7 +371,7 @@
 
         // Limpiamos la selección de esa categoría después de confirmar
         gruposDeCategoria(categoria).forEach(g => {
-            g.seleccionado = null;
+            g.seleccionados = [];
             marcarSeleccion(g);
         });
         actualizarPaneles();
@@ -318,9 +385,12 @@
             <p><strong>${item.tipo}:</strong> ${item.nombre}${item.precio ? ' — ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}</p>
         `).join('');
 
+        const total = reserva.items.reduce((suma, item) => suma + (item.precio || 0), 0);
+
         contenedor.innerHTML = `
             <p class="exito">✅ ¡Reserva registrada, nos vemos en Zona 12!</p>
             ${filas}
+            <p class="total-confirmado"><strong>Total:</strong> ${formatearPrecio(total)}</p>
             <small>${reserva.fecha}</small>
         `;
         contenedor.classList.add('visible');

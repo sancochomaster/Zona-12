@@ -660,6 +660,23 @@ button[type="submit"]:hover {
   margin-bottom: 1.2rem;
 }
 
+/* Total en vivo dentro del panel */
+.panel-reserva .total-reserva {
+  color: #05d9e8;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* Total final dentro de la confirmación */
+.confirmacion-reserva .total-confirmado {
+  color: #f8f8f2;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(5, 217, 232, 0.4);
+}
+
 .btn-confirmar {
   padding: 0.9rem 2.5rem;
   background: linear-gradient(90deg, #ff2a8d, #b537f2);

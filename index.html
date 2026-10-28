@@ -89,24 +89,24 @@
     <div class="categoria-catalogo" data-categoria="computadoras">
       <h3>Computadoras</h3>
 
-      <div class="grid-tarjetas">
-        <article>
-          <h4>Alquiler por Hora (PC Gamer)</h4>
-          <p>Acceso a computadores de alta gama con monitores de 144Hz para juego competitivo y casual.</p>
-          <p><strong>Precio:</strong> $2.500 / hora</p>
-        </article>
+      <!-- SERVICIOS DE PC (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Servicios de PC</h3>
+      <div class="grid-tarjetas" id="grid-servicios-pc"></div>
 
-        <article>
-          <h4>Pase Libre Universitario</h4>
-          <p>Uso de PC para trabajos académicos, internet de alta velocidad e impresiones.</p>
-          <p><strong>Precio:</strong> $20.000 / día</p>
-        </article>
+      <!-- ESTACIONES DE PC (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Estaciones de PC</h3>
+      <div class="grid-tarjetas" id="grid-pcs"></div>
 
-        <article>
-          <h4>Streaming & Content Room</h4>
-          <p>Espacio equipado con cámara, micrófono profesional y PC para transmitir en vivo.</p>
-          <p><strong>Precio:</strong> $3.000 / hora</p>
-        </article>
+      <!-- SNACKS Y BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Snacks y Bebidas</h3>
+      <div class="grid-tarjetas" id="grid-snacks"></div>
+
+      <!-- RESUMEN Y CONFIRMACIÓN DE LA RESERVA -->
+      <div class="panel-reserva" data-categoria-panel="computadoras">
+        <h3>Arma tu Combo</h3>
+        <p class="texto-reserva">Selecciona lo que quieras para armar tu combo.</p>
+        <button type="button" class="btn-confirmar" disabled>Confirmar Reserva</button>
+        <div class="confirmacion-reserva"></div>
       </div>
     </div>
 
@@ -114,24 +114,24 @@
     <div class="categoria-catalogo categoria-oculta" data-categoria="consolas">
       <h3>Consolas</h3>
 
-      <div class="grid-tarjetas">
-        <article>
-          <h4>Estación PS5 / Xbox Series X</h4>
-          <p>Sillas ergonómicas, pantallas 4K y mandos de última generación.</p>
-          <p><strong>Precio:</strong> $3.500 / hora</p>
-        </article>
+      <!-- ESTACIONES DE CONSOLA (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Estaciones de Consola</h3>
+      <div class="grid-tarjetas" id="grid-consolas"></div>
 
-        <article>
-          <h4>Zona Multiplayer (4 Controles)</h4>
-          <p>Ideal para jugar en grupo títulos locales de peleas, deportes o carreras.</p>
-          <p><strong>Precio:</strong> $3.000 / hora por persona</p>
-        </article>
+      <!-- SERVICIOS Y TORNEOS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Servicios y Torneos</h3>
+      <div class="grid-tarjetas" id="grid-servicios-consola"></div>
 
-        <article>
-          <h4>Torneos y Competencias</h4>
-          <p>Inscripción a torneos semanales con premios y acceso a la consola de competencia.</p>
-          <p><strong>Precio:</strong> $7.000 / evento</p>
-        </article>
+      <!-- SNACKS Y BEBIDAS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+      <h3>Snacks y Bebidas</h3>
+      <div class="grid-tarjetas" id="grid-snacks-consolas"></div>
+
+      <!-- RESUMEN Y CONFIRMACIÓN DE LA RESERVA -->
+      <div class="panel-reserva" data-categoria-panel="consolas">
+        <h3>Arma tu Combo</h3>
+        <p class="texto-reserva">Selecciona lo que quieras para armar tu combo.</p>
+        <button type="button" class="btn-confirmar" disabled>Confirmar Reserva</button>
+        <div class="confirmacion-reserva"></div>
       </div>
     </div>
   </section>
@@ -170,6 +170,7 @@
     </form>
   </section>
   <script src="access/js/main.js"></script>
+  <script src="access/js/catalogo.js"></script>
 </body>
 
 </html>

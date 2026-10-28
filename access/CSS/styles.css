@@ -534,3 +534,185 @@ button[type="submit"]:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(255, 42, 141, 0.5);
 }
+
+/* ==========================================
+   RESERVA DE PCs Y SNACKS
+   ========================================== */
+.tarjeta-seleccion {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Una estación ocupada se ve apagada y no se puede elegir */
+.tarjeta-seleccion.ocupada {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tarjeta-seleccion.ocupada:hover {
+  transform: none;
+  border-color: #32145a;
+  box-shadow: none;
+}
+
+/* Tarjeta elegida por el usuario */
+.tarjeta-seleccion.seleccionada {
+  border-color: #ff2a8d;
+  box-shadow: 0 0 22px rgba(255, 42, 141, 0.55);
+}
+
+/* Etiqueta de estado (Disponible / Ocupada) */
+.estado {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  margin-bottom: 0.8rem;
+}
+
+.estado-disponible {
+  color: #05d9e8;
+  border: 1px solid #05d9e8;
+  background-color: rgba(5, 217, 232, 0.12);
+}
+
+.estado-ocupada {
+  color: #ff2a8d;
+  border: 1px solid #ff2a8d;
+  background-color: rgba(255, 42, 141, 0.12);
+}
+
+/* Especificaciones de hardware de cada PC */
+.specs-pc {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem 0;
+}
+
+.specs-pc li {
+  color: #b1a7d8;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.specs-pc li strong {
+  color: #ff2a8d;
+}
+
+/* Botón de selección dentro de cada tarjeta */
+.btn-seleccion {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: transparent;
+  color: #05d9e8;
+  border: 1px solid #05d9e8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-seleccion:hover:not(:disabled) {
+  background-color: rgba(5, 217, 232, 0.15);
+}
+
+.btn-seleccion:disabled {
+  color: #6b5f8f;
+  border-color: #32145a;
+  cursor: not-allowed;
+}
+
+/* Cuando la tarjeta está elegida, el botón se vuelve fucsia */
+.tarjeta-seleccion.seleccionada .btn-seleccion {
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* Panel para armar el combo y confirmar */
+.panel-reserva {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background-color: #15082b;
+  border: 1px solid #32145a;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 42, 141, 0.15);
+}
+
+/* Anula el borde lateral que tienen los h3 de categoría */
+.panel-reserva h3 {
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+  margin: 0 0 0.8rem 0;
+}
+
+.panel-reserva>p {
+  color: #b1a7d8;
+  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+}
+
+.btn-confirmar {
+  padding: 0.9rem 2.5rem;
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-confirmar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(255, 42, 141, 0.6);
+}
+
+.btn-confirmar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Confirmación visual de la reserva */
+.confirmacion-reserva {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background-color: rgba(5, 217, 232, 0.08);
+  border: 1px solid #05d9e8;
+  border-radius: 10px;
+}
+
+.confirmacion-reserva.visible {
+  display: block;
+}
+
+.confirmacion-reserva p {
+  color: #f8f8f2;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+
+.confirmacion-reserva p strong {
+  color: #05d9e8;
+}
+
+.confirmacion-reserva .exito {
+  color: #05d9e8;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.confirmacion-reserva small {
+  color: #b1a7d8;
+}

@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarContador();
     setInterval(actualizarContador, 1000);
 
-    // Noticia gamer aleatoria (edita o agrega las que quieras aquí)
+    // Noticia gamer aleatoria
     const noticiasGamer = [
         {
             titulo: 'Los esports siguen creciendo en Latinoamérica',
@@ -280,6 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
             texto: 'Los clásicos de los 80 y 90 regresan con gráficos modernos, conquistando a veteranos y a nuevas generaciones.'
         },
         {
+            titulo: 'Nuevos computadores han llegado!',
+            texto: 'La nueva ola de computadores ha llegado a zona 12'
+        },
+          {
             titulo: 'El gaming móvil no se detiene',
             texto: 'Millones de jugadores ya compiten desde el celular, y los torneos móviles ganan cada vez más premios.'
         }

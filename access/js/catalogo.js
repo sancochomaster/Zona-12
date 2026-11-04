@@ -128,11 +128,44 @@ const snacks = [
     { id: 'sn-3', titulo: 'Chocolatina', precio: 2500 }
 ];
 
+// Combos (paquetes con precio especial; se elige UNO)
+const combos = [
+    {
+        id: 'cb-1',
+        titulo: 'Combo Gamer PC',
+        detalle: '2 horas de PC Gamer + Gaseosa + Papas Fritas.',
+        precio: 9500,
+        sufijo: '/ combo'
+    },
+    {
+        id: 'cb-2',
+        titulo: 'Combo Universitario',
+        detalle: 'Pase Libre Universitario + Café + Chocolatina.',
+        precio: 23000,
+        sufijo: '/ combo'
+    },
+    {
+        id: 'cb-3',
+        titulo: 'Combo Dúo Consola',
+        detalle: '2 horas de consola + 2 Bebidas + Maní para compartir.',
+        precio: 12500,
+        sufijo: '/ combo'
+    },
+    {
+        id: 'cb-4',
+        titulo: 'Combo Squad Multiplayer',
+        detalle: 'Zona Multiplayer (4 controles) por 1 hora + 4 Gaseosas + 2 Papas Fritas.',
+        precio: 24000,
+        sufijo: '/ combo'
+    }
+];
+
 // --- Grupos de selección: cada uno se pinta en su contenedor ---
 // 'multiple: true' permite elegir varios ítems (snacks); sin él solo se elige uno.
 // 'requiere' indica las claves de otros grupos que deben estar elegidas antes
 // (bebidas y snacks solo se pueden pedir después de elegir el servicio y su PC/consola).
 const grupos = [
+    { clave: 'combo', categoria: 'combos', contenedor: 'grid-combos', etiqueta: 'Combo', items: combos, seleccionados: [] },
     { clave: 'servicioPC', categoria: 'computadoras', contenedor: 'grid-servicios-pc', etiqueta: 'Servicio', items: serviciosPC, seleccionados: [] },
     { clave: 'pc', categoria: 'computadoras', contenedor: 'grid-pcs', etiqueta: 'PC', items: computadoras, seleccionados: [] },
     {
@@ -364,6 +397,10 @@ function confirmarReserva(panel) {
             precio: item.precio || 0,
             sufijo: item.sufijo || ''
         }))),
+        usuario: (() => {
+            const sesion = JSON.parse(localStorage.getItem('sesionZona12'));
+            return sesion ? `${sesion.nombre} (${sesion.email})` : 'Invitado';
+        })(),
         fecha: new Date().toLocaleString('es-CO')
     };
 

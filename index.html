@@ -15,8 +15,7 @@
     <nav>
       <ul>
         <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#catalogo">Catálogo</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#sesion" class="btn-sesion">Iniciar sesión</a></li>
         <li><a href="#administrador">Administrador</a></li>
       </ul>
     </nav>
@@ -83,6 +82,22 @@
     <div class="filtros-catalogo">
       <button type="button" class="filtro-btn activo" data-categoria="computadoras">Computadoras</button>
       <button type="button" class="filtro-btn" data-categoria="consolas">Consolas</button>
+    </div>
+
+    <!-- SECCIÓN COMBOS (SE PINTAN DINÁMICAMENTE CON JAVASCRIPT) -->
+    <div class="combos-catalogo">
+      <h3>Combos</h3>
+      <p>Ahorra con nuestros paquetes listos: tiempo de juego + bebidas y snacks a mejor precio.</p>
+      <div class="grid-tarjetas" id="grid-combos"></div>
+
+      <!-- RESUMEN Y CONFIRMACIÓN DE LA RESERVA -->
+      <div class="panel-reserva" data-categoria-panel="combos">
+        <h3>Tu Combo</h3>
+        <p class="texto-reserva">Selecciona un combo para reservarlo.</p>
+        <p class="total-reserva"></p>
+        <button type="button" class="btn-confirmar" disabled>Confirmar Reserva</button>
+        <div class="confirmacion-reserva"></div>
+      </div>
     </div>
 
     <!-- CATEGORÍA 1: COMPUTADORAS -->
@@ -164,6 +179,54 @@
 
       <button type="submit">Enviar mensaje</button>
     </form>
+  </section>
+
+  <!-- SECCIÓN CUENTA DE USUARIO (REGISTRO / LOGIN) -->
+  <section id="sesion">
+    <h2>Mi Cuenta</h2>
+
+    <div id="sesion-formularios">
+      <!-- LOGIN DE USUARIO -->
+      <form id="form-usuario-login">
+        <h3>Iniciar sesión</h3>
+        <label for="ul-email">Email:</label><br>
+        <input type="email" id="ul-email" placeholder="tu@correo.com" required><br><br>
+
+        <label for="ul-password">Contraseña:</label><br>
+        <input type="password" id="ul-password" placeholder="********" required><br><br>
+
+        <button type="submit">Ingresar</button>
+        <p class="cambio-sesion">¿No tienes cuenta? <a href="#sesion" id="ir-registro">Regístrate</a></p>
+      </form>
+
+      <!-- REGISTRO DE USUARIO -->
+      <form id="form-usuario-registro" style="display: none;">
+        <h3>Crear cuenta</h3>
+        <label for="ur-nombre">Nombre:</label><br>
+        <input type="text" id="ur-nombre" placeholder="Tu nombre" required><br><br>
+
+        <label for="ur-email">Email:</label><br>
+        <input type="email" id="ur-email" placeholder="tu@correo.com" required><br><br>
+
+        <label for="ur-password">Contraseña (mínimo 6 caracteres):</label><br>
+        <input type="password" id="ur-password" placeholder="********" minlength="6" required><br><br>
+
+        <label for="ur-confirmar">Confirmar contraseña:</label><br>
+        <input type="password" id="ur-confirmar" placeholder="********" minlength="6" required><br><br>
+
+        <button type="submit">Registrarme</button>
+        <p class="cambio-sesion">¿Ya tienes cuenta? <a href="#sesion" id="ir-login">Inicia sesión</a></p>
+      </form>
+    </div>
+
+    <!-- VISTA CON SESIÓN INICIADA -->
+    <div id="sesion-activa" style="display: none;">
+      <h3 id="sesion-saludo"></h3>
+      <p id="sesion-correo"></p>
+      <button type="button" id="btn-cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <p id="sesion-mensaje" role="status"></p>
   </section>
 
   <!-- SECCIÓN ADMINISTRADOR (LOGIN) -->

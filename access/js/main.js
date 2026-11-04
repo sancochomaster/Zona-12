@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
                 <div style="background: #0d0221; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #32145a;">
                     <p style="color: #ff2a8d; font-weight: bold;">Reserva #${index + 1} — ${reserva.categoria}</p>
+                    <p style="color: #05d9e8;"><strong>Cliente:</strong> ${reserva.usuario || 'Invitado'}</p>
                     ${filas}
                     <p style="color: #f8f8f2; margin-top: 0.5rem;"><strong>Total:</strong> ${formatearPrecio(total)}</p>
                     <small style="color: #b1a7d8;">Fecha: ${reserva.fecha}</small>
@@ -331,5 +332,152 @@ document.addEventListener('DOMContentLoaded', () => {
         tituloNoticia.textContent = noticia.titulo;
         textoNoticia.textContent = noticia.texto;
     }
+
+    // --- 7. CUENTAS DE USUARIO (REGISTRO + LOGIN CON localStorage) ---
+    // OJO: esto es una simulación del lado del cliente (sin servidor). Sirve para
+    // la demo, pero en un sitio real la autenticación debe hacerse en un backend.
+    const CLAVE_USUARIOS = 'usuariosZona12';
+    const CLAVE_SESION = 'sesionZona12';
+
+    const formUsuarioLogin = document.getElementById('form-usuario-login');
+    const formUsuarioRegistro = document.getElementById('form-usuario-registro');
+    const vistaSesionActiva = document.getElementById('sesion-activa');
+    const contenedorFormsSesion = document.getElementById('sesion-formularios');
+    const mensajeSesion = document.getElementById('sesion-mensaje');
+    const botonNavSesion = document.querySelector('.btn-sesion');
+
+    // Hash SHA-256 para no guardar la contraseña en texto plano
+    async function hashear(texto) {
+        if (window.crypto && crypto.subtle) {
+            const datos = new TextEncoder().encode(texto);
+            const buffer = await crypto.subtle.digest('SHA-256', datos);
+            return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        return texto;
+    }
+
+    const leerUsuarios = () => JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || [];
+    const leerSesion = () => JSON.parse(localStorage.getItem(CLAVE_SESION));
+
+    function avisoSesion(texto, esError) {
+        if (!mensajeSesion) return;
+        mensajeSesion.textContent = texto;
+        mensajeSesion.style.color = esError ? '#ff2a8d' : '#05d9e8';
+    }
+
+    // Texto bajo el título "Mi Cuenta" según lo que se esté mostrando
+    function actualizarIntroSesion() {
+        const intro = document.getElementById('sesion-intro');
+        if (!intro) return;
+
+        if (leerSesion()) {
+            intro.textContent = 'Ya iniciaste sesión en Zona 12. Desde aquí puedes cerrarla cuando quieras.';
+        } else if (formUsuarioRegistro && formUsuarioRegistro.style.display === 'block') {
+            intro.textContent = 'Crea tu cuenta con tus datos para empezar a reservar en Zona 12.';
+        } else {
+            intro.textContent = 'Ingresa con tu correo y contraseña para reservar y consultar con nosotros.';
+        }
+    }
+
+    // Actualiza formularios, vista de cuenta, botón del menú y formulario de contacto
+    function actualizarVistaSesion() {
+        const sesion = leerSesion();
+
+        if (contenedorFormsSesion) contenedorFormsSesion.style.display = sesion ? 'none' : 'block';
+        if (vistaSesionActiva) vistaSesionActiva.style.display = sesion ? 'block' : 'none';
+        actualizarIntroSesion();
+
+        if (sesion) {
+            document.getElementById('sesion-saludo').textContent = `¡Hola, ${sesion.nombre}!`;
+            document.getElementById('sesion-correo').textContent = sesion.email;
+        }
+
+        if (botonNavSesion) {
+            botonNavSesion.textContent = sesion ? '👤 ' + sesion.nombre.split(' ')[0] : 'Iniciar sesión';
+        }
+
+        // Si hay sesión, rellenamos el formulario de contacto
+        const campoNombre = document.getElementById('nombre');
+        const campoEmail = document.getElementById('email');
+        if (sesion && campoNombre && campoEmail) {
+            if (!campoNombre.value) campoNombre.value = sesion.nombre;
+            if (!campoEmail.value) campoEmail.value = sesion.email;
+        }
+    }
+
+    function mostrarFormularioSesion(cual) {
+        if (!formUsuarioLogin || !formUsuarioRegistro) return;
+        formUsuarioLogin.style.display = cual === 'registro' ? 'none' : 'block';
+        formUsuarioRegistro.style.display = cual === 'registro' ? 'block' : 'none';
+        actualizarIntroSesion();
+        avisoSesion('', false);
+    }
+
+    const irRegistro = document.getElementById('ir-registro');
+    const irLogin = document.getElementById('ir-login');
+    if (irRegistro) irRegistro.addEventListener('click', (e) => { e.preventDefault(); mostrarFormularioSesion('registro'); });
+    if (irLogin) irLogin.addEventListener('click', (e) => { e.preventDefault(); mostrarFormularioSesion('login'); });
+
+    if (formUsuarioRegistro) {
+        formUsuarioRegistro.addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+
+            const nombre = document.getElementById('ur-nombre').value.trim();
+            const email = document.getElementById('ur-email').value.trim().toLowerCase();
+            const password = document.getElementById('ur-password').value;
+            const confirmar = document.getElementById('ur-confirmar').value;
+
+            if (password.length < 6) return avisoSesion('La contraseña debe tener al menos 6 caracteres.', true);
+            if (password !== confirmar) return avisoSesion('Las contraseñas no coinciden.', true);
+
+            const usuarios = leerUsuarios();
+            if (usuarios.some(u => u.email === email)) {
+                return avisoSesion('Ya existe una cuenta con ese correo.', true);
+            }
+
+            usuarios.push({
+                nombre,
+                email,
+                clave: await hashear(password),
+                fecha: new Date().toLocaleDateString('es-CO')
+            });
+            localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
+
+            // Después de registrarse, se inicia sesión automáticamente
+            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre, email }));
+            formUsuarioRegistro.reset();
+            avisoSesion('¡Cuenta creada! Ya iniciaste sesión.', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    if (formUsuarioLogin) {
+        formUsuarioLogin.addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+
+            const email = document.getElementById('ul-email').value.trim().toLowerCase();
+            const clave = await hashear(document.getElementById('ul-password').value);
+            const usuario = leerUsuarios().find(u => u.email === email && u.clave === clave);
+
+            if (!usuario) return avisoSesion('Correo o contraseña incorrectos.', true);
+
+            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre: usuario.nombre, email: usuario.email }));
+            formUsuarioLogin.reset();
+            avisoSesion('', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+    if (btnCerrarSesion) {
+        btnCerrarSesion.addEventListener('click', () => {
+            localStorage.removeItem(CLAVE_SESION);
+            mostrarFormularioSesion('login');
+            avisoSesion('Sesión cerrada.', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    actualizarVistaSesion();
 
 });

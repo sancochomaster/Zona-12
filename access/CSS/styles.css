@@ -1101,3 +1101,173 @@ button[type="submit"]:hover {
 .confirmacion-reserva small {
   color: #b1a7d8;
 }
+
+/* ==========================================
+   BOTÓN "INICIAR SESIÓN" DEL MENÚ
+   ========================================== */
+nav a.btn-sesion {
+  display: inline-block;
+  padding: 0.45rem 1.3rem;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 42, 141, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+nav a.btn-sesion:hover {
+  color: #ffffff;
+  text-shadow: none;
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(255, 42, 141, 0.8);
+}
+
+/* ==========================================
+   SECCIÓN MI CUENTA (REGISTRO / LOGIN DE USUARIO)
+   ========================================== */
+#sesion {
+  padding: 4rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#sesion h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+/* Texto introductorio bajo el título (igual que en Contacto) */
+#sesion>.intro-sesion {
+  text-align: center;
+  color: #b1a7d8;
+  margin-bottom: 2rem;
+}
+
+/* Misma línea decorativa vaporwave de los otros títulos */
+#sesion h2::after {
+  content: '';
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff2a8d, #05d9e8);
+  margin: 0.5rem auto 0 auto;
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(255, 42, 141, 0.7);
+}
+
+/* Tarjetas: login, registro y vista con sesión iniciada */
+#form-usuario-login,
+#form-usuario-registro,
+#sesion-activa {
+  background-color: #15082b;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  border: 1px solid #32145a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+#sesion-activa h3 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+/* Enlace para alternar entre login y registro */
+.cambio-sesion {
+  text-align: center;
+  color: #b1a7d8;
+  font-size: 0.9rem;
+  margin-top: 1.3rem;
+}
+
+.cambio-sesion a {
+  color: #05d9e8;
+  font-weight: 600;
+  text-decoration: none;
+  transition: text-shadow 0.3s ease;
+}
+
+.cambio-sesion a:hover {
+  text-shadow: 0 0 10px rgba(5, 217, 232, 0.7);
+  text-decoration: underline;
+}
+
+/* Vista con sesión iniciada */
+#sesion-activa {
+  text-align: center;
+}
+
+#sesion-correo {
+  color: #05d9e8;
+  font-size: 0.95rem;
+  margin-bottom: 1.6rem;
+}
+
+#btn-cerrar-sesion {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  color: #05d9e8;
+  border: 2px solid #05d9e8;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+#btn-cerrar-sesion:hover {
+  background: rgba(5, 217, 232, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(5, 217, 232, 0.5);
+}
+
+/* Mensajes de error / éxito (el color lo pone el JS) */
+#sesion-mensaje {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 1.2rem;
+  min-height: 1.4rem;
+}
+
+#sesion-mensaje:empty {
+  display: none;
+}
+
+/* ==========================================
+   SECCIÓN COMBOS (ANTES DE LAS CATEGORÍAS)
+   ========================================== */
+.combos-catalogo {
+  margin-bottom: 1rem;
+}
+
+.combos-catalogo>h3 {
+  font-size: 1.6rem;
+  color: #ffffff;
+  border-left: 4px solid #ff2a8d;
+  padding-left: 0.8rem;
+  margin: 1rem 0 0.8rem 0;
+}
+
+.combos-catalogo>p {
+  color: #b1a7d8;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #sesion {
+    padding: 3rem 1rem;
+  }
+
+  #form-usuario-login,
+  #form-usuario-registro,
+  #sesion-activa {
+    padding: 2rem 1.2rem;
+  }
+}

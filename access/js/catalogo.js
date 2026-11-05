@@ -192,6 +192,14 @@ const grupos = [
     }
 ];
 
+// Grupos que son obligatorios para poder confirmar la compra en cada categoría.
+// En computadoras y consolas no basta con la estación: SIEMPRE debe ir acompañada
+// de un servicio (y viceversa) para poder realizar la compra.
+const obligatoriosPorCategoria = {
+    computadoras: ['servicioPC', 'pc'],
+    consolas: ['servicioConsola', 'estacionConsola']
+};
+
 // Pinta un grupo completo de tarjetas en su contenedor
 function pintarGrupo(grupo) {
     const contenedor = document.getElementById(grupo.contenedor);
@@ -358,18 +366,39 @@ const totalDeGrupos = (listaGrupos) => listaGrupos.reduce((suma, g) =>
 // Refresca el texto, el total y el botón del panel de cada categoría
 function actualizarPaneles() {
     document.querySelectorAll('.panel-reserva').forEach(panel => {
-        const seleccionados = gruposDeCategoria(panel.dataset.categoriaPanel).filter(g => g.seleccionados.length > 0);
+        const categoria = panel.dataset.categoriaPanel;
+        const seleccionados = gruposDeCategoria(categoria).filter(g => g.seleccionados.length > 0);
 
         const texto = panel.querySelector('.texto-reserva');
         const totalEl = panel.querySelector('.total-reserva');
         const boton = panel.querySelector('.btn-confirmar');
 
+        // Grupos obligatorios de la categoría que aún no se han elegido
+        const faltantes = (obligatoriosPorCategoria[categoria] || []).filter(clave => {
+            const g = grupos.find(gr => gr.clave === clave);
+            return !g || g.seleccionados.length === 0;
+        });
+
         if (texto) {
-            texto.textContent = seleccionados.length === 0
-                ? 'Selecciona lo que quieras para armar tu combo.'
-                : 'Tu selección: ' + seleccionados
+            if (seleccionados.length === 0) {
+                texto.textContent = faltantes.length
+                    ? 'Para comprar debes elegir un Servicio y una Estación.'
+                    : 'Selecciona lo que quieras para armar tu combo.';
+            } else {
+                let mensaje = 'Tu selección: ' + seleccionados
                     .map(g => `${g.etiqueta}: ${g.seleccionados.map(i => i.titulo).join(', ')}`)
                     .join(' + ');
+
+                if (faltantes.length > 0) {
+                    const nombres = faltantes.map(clave => {
+                        const g = grupos.find(gr => gr.clave === clave);
+                        return g ? g.etiqueta : clave;
+                    });
+                    mensaje += `. Falta elegir: ${nombres.join(' y ')} para poder comprar.`;
+                }
+
+                texto.textContent = mensaje;
+            }
         }
 
         if (totalEl) {
@@ -379,12 +408,15 @@ function actualizarPaneles() {
         }
 
         if (boton) {
-            boton.disabled = seleccionados.length === 0;
+            // No se puede comprar sin ítems, ni sin los grupos obligatorios (servicio + estación)
+            boton.disabled = seleccionados.length === 0 || faltantes.length > 0;
         }
     });
 }
 
-// Guarda la reserva en localStorage y muestra la confirmación en pantalla
+// Al confirmar, la compra queda PENDIENTE de pago y se envía a la pestaña de pago.
+// Solo cuando el pago se completa (en pago.js) se guarda en 'reservasZona12',
+// que es la lista que ve el administrador. Las compras sin pagar no se cuentan.
 function confirmarReserva(panel) {
     const categoria = panel.dataset.categoriaPanel;
     const seleccionados = gruposDeCategoria(categoria).filter(g => g.seleccionados.length > 0);
@@ -404,37 +436,34 @@ function confirmarReserva(panel) {
         fecha: new Date().toLocaleString('es-CO')
     };
 
-    const reservasGuardadas = JSON.parse(localStorage.getItem('reservasZona12')) || [];
-    reservasGuardadas.push(reserva);
-    localStorage.setItem('reservasZona12', JSON.stringify(reservasGuardadas));
+    // Guardamos la compra como pendiente de pago (aún no cuenta para el admin)
+    localStorage.setItem('pagoPendienteZona12', JSON.stringify(reserva));
 
-    mostrarConfirmacion(panel, reserva);
-
-    // Limpiamos la selección de esa categoría después de confirmar
+    // Limpiamos la selección de esa categoría antes de ir al pago
     gruposDeCategoria(categoria).forEach(g => {
         g.seleccionados = [];
         marcarSeleccion(g);
     });
     actualizarPaneles();
+
+    // Enviamos al usuario a la pestaña de pago
+    window.location.href = 'pago.html';
 }
 
-function mostrarConfirmacion(panel, reserva) {
-    const contenedor = panel.querySelector('.confirmacion-reserva');
-    if (!contenedor) return;
+// --- Bloqueo del catálogo: usar cualquier función requiere iniciar sesión ---
+const catalogo = document.getElementById('catalogo');
+const sesionActiva = JSON.parse(localStorage.getItem('sesionZona12'));
 
-    const filas = reserva.items.map(item => `
-            <p><strong>${item.tipo}:</strong> ${item.nombre}${item.precio ? ' — ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}</p>
-        `).join('');
+if (catalogo && !sesionActiva) {
+    catalogo.classList.add('bloqueado');
 
-    const total = reserva.items.reduce((suma, item) => suma + (item.precio || 0), 0);
-
-    contenedor.innerHTML = `
-            <p class="exito">✅ ¡Reserva registrada, nos vemos en Zona 12!</p>
-            ${filas}
-            <p class="total-confirmado"><strong>Total:</strong> ${formatearPrecio(total)}</p>
-            <small>${reserva.fecha}</small>
-        `;
-    contenedor.classList.add('visible');
+    // Cualquier clic dentro del catálogo (salvo el enlace de login) envía a iniciar sesión
+    catalogo.addEventListener('click', (evento) => {
+        if (evento.target.closest('.aviso-catalogo')) return;
+        evento.preventDefault();
+        evento.stopPropagation();
+        window.location.href = 'sesion.html';
+    }, true);
 }
 
 // --- Inicialización: pintar grupos y conectar los paneles ---

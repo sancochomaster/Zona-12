@@ -51,14 +51,23 @@ nav a {
   color: #f8f8f2;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-size: 0.95rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease,
+    border-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
 }
 
 nav a:hover {
   color: #05d9e8;
   /* Cian eléctrico al pasar el mouse */
   text-shadow: 0 0 10px rgba(5, 217, 232, 0.6);
+  background: rgba(5, 217, 232, 0.1);
+  border-color: rgba(5, 217, 232, 0.55);
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(5, 217, 232, 0.3);
 }
 
 /* ==========================================
@@ -128,34 +137,53 @@ nav a:hover {
 .cta-inicio a {
   text-decoration: none;
   font-weight: 700;
-  font-size: 1rem;
-  padding: 0.9rem 2rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 1rem 2.3rem;
   border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
   transition: transform 0.25s ease, box-shadow 0.3s ease,
     background 0.3s ease, color 0.3s ease;
+}
+
+/* Flecha que se desliza al pasar el mouse */
+.cta-inicio a::after {
+  content: '→';
+  font-size: 1.05em;
+  transition: transform 0.25s ease;
+}
+
+.cta-inicio a:hover::after {
+  transform: translateX(5px);
 }
 
 .cta-principal {
   background: linear-gradient(90deg, #ff2a8d, #b537f2);
   color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
   box-shadow: 0 0 20px rgba(255, 42, 141, 0.5);
 }
 
 .cta-principal:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 30px rgba(255, 42, 141, 0.85);
+  box-shadow: 0 0 34px rgba(255, 42, 141, 0.9);
 }
 
 .cta-secundario {
-  background: transparent;
+  background: rgba(5, 217, 232, 0.06);
   color: #05d9e8;
   border: 2px solid #05d9e8;
 }
 
 .cta-secundario:hover {
-  background: rgba(5, 217, 232, 0.12);
+  background: rgba(5, 217, 232, 0.16);
+  color: #eafcff;
   transform: translateY(-3px);
-  box-shadow: 0 0 25px rgba(5, 217, 232, 0.5);
+  box-shadow: 0 0 28px rgba(5, 217, 232, 0.6);
 }
 
 /* ==========================================
@@ -329,8 +357,99 @@ nav a:hover {
 }
 
 /* ==========================================
+   CATÁLOGO BLOQUEADO (REQUIERE INICIAR SESIÓN)
+   ========================================== */
+.aviso-catalogo {
+  display: none;
+}
+
+#catalogo.bloqueado .aviso-catalogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2.5rem auto;
+  padding: 2rem;
+  background-color: #15082b;
+  border: 1px solid #ff2a8d;
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(255, 42, 141, 0.25);
+}
+
+.aviso-catalogo p {
+  color: #f8f8f2;
+  font-size: 1.05rem;
+}
+
+.aviso-catalogo a {
+  display: inline-block;
+  padding: 0.7rem 1.8rem;
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 42, 141, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.aviso-catalogo a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(255, 42, 141, 0.7);
+}
+
+/* Todo el contenido del catálogo queda inactivo y atenuado */
+#catalogo.bloqueado>*:not(.aviso-catalogo):not(h2):not(p) {
+  pointer-events: none;
+  opacity: 0.4;
+  filter: grayscale(0.5);
+  user-select: none;
+}
+
+/* ==========================================
    PESTAÑAS DE CATEGORÍA (FILTROS)
    ========================================== */
+.titulo-filtros {
+  position: relative;
+  width: fit-content;
+  text-align: center;
+  font-size: 2.3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 3rem auto 1.6rem;
+  background: linear-gradient(90deg, #05d9e8, #ff2a8d, #b537f2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: pulso-titulo 2.6s ease-in-out infinite;
+}
+
+.titulo-filtros::after {
+  content: '';
+  display: block;
+  width: 70%;
+  height: 3px;
+  margin: 0.7rem auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, #05d9e8, #ff2a8d, transparent);
+  box-shadow: 0 0 14px rgba(255, 42, 141, 0.7);
+}
+
+@keyframes pulso-titulo {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 12px rgba(255, 42, 141, 0.45)) drop-shadow(0 0 22px rgba(5, 217, 232, 0.3));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 22px rgba(255, 42, 141, 0.85)) drop-shadow(0 0 36px rgba(5, 217, 232, 0.6));
+  }
+}
+
 .filtros-catalogo {
   display: flex;
   justify-content: center;
@@ -456,12 +575,13 @@ nav a:hover {
 
 #administrador {
   padding: 4rem 2rem;
-  max-width: 450px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 #contacto h2,
-#administrador h2 {
+#administrador h2,
+#pago h2 {
   text-align: center;
   font-size: 2.2rem;
   color: #ffffff;
@@ -474,6 +594,141 @@ nav a:hover {
   margin-bottom: 2rem;
 }
 
+/* ==========================================
+   PÁGINA DE PAGO
+   ========================================== */
+#pago {
+  padding: 4rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#pago>p {
+  text-align: center;
+  color: #b1a7d8;
+  margin-bottom: 2rem;
+}
+
+#pago-resumen {
+  background-color: #15082b;
+  padding: 1.8rem;
+  border-radius: 14px;
+  border: 1px solid #32145a;
+  border-left: 4px solid #05d9e8;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
+}
+
+#pago-resumen h3 {
+  color: #05d9e8;
+  margin-bottom: 0.8rem;
+}
+
+.pago-dato {
+  color: #05d9e8;
+}
+
+.pago-dato strong {
+  color: #f8f8f2;
+}
+
+.pago-item {
+  color: #f8f8f2;
+  margin: 0.3rem 0;
+}
+
+.pago-item strong {
+  color: #05d9e8;
+}
+
+.pago-total {
+  color: #00ff88;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(5, 217, 232, 0.4);
+}
+
+.pago-vacio {
+  color: #b1a7d8;
+  text-align: center;
+}
+
+.pago-vacio a {
+  color: #05d9e8;
+}
+
+#form-pago {
+  background-color: #15082b;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  border: 1px solid #32145a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.pago-fila {
+  display: flex;
+  gap: 1rem;
+}
+
+.pago-fila>div {
+  flex: 1;
+}
+
+.btn-cancelar-pago {
+  width: 100%;
+  margin-top: 0.8rem;
+  padding: 0.9rem;
+  background: transparent;
+  color: #ff2a8d;
+  border: 1px solid #ff2a8d;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-cancelar-pago:hover {
+  background: rgba(255, 42, 141, 0.15);
+  box-shadow: 0 0 15px rgba(255, 42, 141, 0.35);
+}
+
+#pago-mensaje {
+  display: none;
+  background-color: #15082b;
+  padding: 2rem;
+  border-radius: 14px;
+  border: 1px solid #00ff88;
+  box-shadow: 0 0 25px rgba(0, 255, 136, 0.25);
+  text-align: center;
+}
+
+#pago-mensaje.visible {
+  display: block;
+  animation: aparecer-admin 0.35s ease;
+}
+
+.pago-exito {
+  color: #00ff88;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.pago-volver {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.7rem 1.8rem;
+  background: linear-gradient(90deg, #ff2a8d, #05d9e8);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 700;
+}
+
 /* FORMULARIOS (CONTACTO Y LOGIN) */
 #form-contacto,
 #form-login {
@@ -482,6 +737,175 @@ nav a:hover {
   border-radius: 14px;
   border: 1px solid #32145a;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* El login de admin mantiene un ancho cómodo aunque su sección sea más amplia */
+#form-login {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   PANEL DE ADMINISTRADOR (MENSAJES Y COMPRAS)
+   ========================================== */
+.admin-encabezado {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.admin-encabezado h3 {
+  font-size: 1.9rem;
+  color: #ffffff;
+  text-shadow: 0 0 16px rgba(255, 42, 141, 0.5);
+}
+
+.admin-encabezado p {
+  color: #b1a7d8;
+  margin-top: 0.4rem;
+}
+
+/* Pestañas que separan los mensajes de las compras */
+.admin-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.admin-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #15082b;
+  color: #f8f8f2;
+  border: 1px solid #32145a;
+  border-radius: 30px;
+  padding: 0.75rem 1.6rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-tab:hover {
+  color: #05d9e8;
+  border-color: #05d9e8;
+}
+
+.admin-tab.activo {
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(255, 42, 141, 0.5);
+}
+
+.admin-contador {
+  background: rgba(13, 2, 33, 0.65);
+  color: #05d9e8;
+  border-radius: 20px;
+  padding: 0.05rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.admin-tab.activo .admin-contador {
+  background: rgba(13, 2, 33, 0.45);
+  color: #ffffff;
+}
+
+.admin-panel {
+  display: none;
+}
+
+.admin-panel.activo {
+  display: block;
+  animation: aparecer-admin 0.35s ease;
+}
+
+@keyframes aparecer-admin {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-vacio {
+  text-align: center;
+  color: #b1a7d8;
+  padding: 2rem;
+  border: 1px dashed #32145a;
+  border-radius: 12px;
+}
+
+/* Tarjetas de mensajes de contacto y de compras de clientes */
+.admin-tarjeta {
+  background: #15082b;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  border: 1px solid #32145a;
+  border-left: 4px solid #ff2a8d;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.admin-tarjeta.compra {
+  border-left-color: #05d9e8;
+}
+
+.admin-tarjeta-titulo {
+  color: #ff2a8d;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.admin-tarjeta.compra .admin-tarjeta-titulo {
+  color: #05d9e8;
+}
+
+.admin-dato {
+  color: #05d9e8;
+}
+
+.admin-dato strong {
+  color: #f8f8f2;
+}
+
+.admin-mensaje-texto {
+  color: #f8f8f2;
+  margin: 0.6rem 0;
+}
+
+.admin-items {
+  margin: 0.5rem 0;
+}
+
+.admin-item {
+  color: #f8f8f2;
+  margin: 0.25rem 0;
+}
+
+.admin-item strong {
+  color: #05d9e8;
+}
+
+.admin-total {
+  color: #00ff88;
+  font-weight: 700;
+  margin-top: 0.6rem;
+}
+
+.admin-fecha {
+  display: block;
+  color: #b1a7d8;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
 }
 
 label {
@@ -1035,16 +1459,6 @@ button[type="submit"]:hover {
   font-weight: 700;
 }
 
-/* Total final dentro de la confirmación */
-.confirmacion-reserva .total-confirmado {
-  color: #f8f8f2;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-top: 0.8rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid rgba(5, 217, 232, 0.4);
-}
-
 .btn-confirmar {
   padding: 0.9rem 2.5rem;
   background: linear-gradient(90deg, #ff2a8d, #b537f2);
@@ -1066,40 +1480,6 @@ button[type="submit"]:hover {
 .btn-confirmar:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-/* Confirmación visual de la reserva */
-.confirmacion-reserva {
-  display: none;
-  margin-top: 1.5rem;
-  padding: 1.2rem;
-  background-color: rgba(5, 217, 232, 0.08);
-  border: 1px solid #05d9e8;
-  border-radius: 10px;
-}
-
-.confirmacion-reserva.visible {
-  display: block;
-}
-
-.confirmacion-reserva p {
-  color: #f8f8f2;
-  font-size: 0.95rem;
-  margin-bottom: 0.4rem;
-}
-
-.confirmacion-reserva p strong {
-  color: #05d9e8;
-}
-
-.confirmacion-reserva .exito {
-  color: #05d9e8;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.confirmacion-reserva small {
-  color: #b1a7d8;
 }
 
 /* ==========================================
@@ -1270,4 +1650,198 @@ nav a.btn-sesion:hover {
   #sesion-activa {
     padding: 2rem 1.2rem;
   }
+
+  /* En pantallas pequeñas los botones del hero ocupan todo el ancho */
+  .cta-inicio a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================
+   BOTÓN DEL FORMULARIO DE CONTACTO (MEJORA)
+   ========================================== */
+#contacto button[type="submit"] {
+  margin-top: 0.4rem;
+  padding: 1rem;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 30px;
+  box-shadow: 0 0 18px rgba(255, 42, 141, 0.35);
+}
+
+#contacto button[type="submit"]:hover {
+  box-shadow: 0 6px 26px rgba(255, 42, 141, 0.6);
+}
+
+/* ==========================================
+   COMBOS DESTACADOS (MEJORA VISUAL)
+   ========================================== */
+.combos-catalogo #grid-combos {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.6rem;
+}
+
+.combos-catalogo .tarjeta-seleccion {
+  position: relative;
+  overflow: hidden;
+  padding: 2.2rem 1.6rem 1.6rem;
+  background: linear-gradient(155deg, #241043 0%, #15082b 65%);
+  border: 1px solid rgba(255, 42, 141, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Cinta "COMBO" en la esquina de cada tarjeta */
+.combos-catalogo .tarjeta-seleccion::before {
+  content: 'COMBO';
+  position: absolute;
+  top: 18px;
+  right: -38px;
+  width: 150px;
+  text-align: center;
+  transform: rotate(45deg);
+  background: linear-gradient(90deg, #ff2a8d, #b537f2);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 0.3rem 0;
+  box-shadow: 0 0 18px rgba(255, 42, 141, 0.6);
+  pointer-events: none;
+}
+
+.combos-catalogo .tarjeta-seleccion:hover {
+  transform: translateY(-8px);
+  border-color: #ff2a8d;
+  box-shadow: 0 16px 40px rgba(255, 42, 141, 0.35);
+}
+
+.combos-catalogo .tarjeta-seleccion h4 {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff, #ff9ad5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.combos-catalogo .tarjeta-seleccion p {
+  color: #cbc0ec;
+}
+
+.combos-catalogo .precio-estacion {
+  margin: 0.8rem 0 1.2rem;
+}
+
+.combos-catalogo .precio-estacion strong {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  background: rgba(5, 217, 232, 0.1);
+  border: 1px solid rgba(5, 217, 232, 0.5);
+  font-size: 1.3rem;
+  color: #05d9e8;
+  text-shadow: 0 0 14px rgba(5, 217, 232, 0.6);
+}
+
+.combos-catalogo .btn-seleccion {
+  border-radius: 30px;
+  padding: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   HISTORIAL DE COMPRAS (MI CUENTA)
+   ========================================== */
+#historial-compras {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #32145a;
+  text-align: left;
+}
+
+#historial-compras h3 {
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.compra-tarjeta {
+  background: #0d0221;
+  border: 1px solid #32145a;
+  border-left: 4px solid #05d9e8;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.compra-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  gap: 0.5rem;
+}
+
+.compra-numero {
+  color: #ff2a8d;
+  font-weight: 700;
+}
+
+.compra-categoria {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #05d9e8;
+  border: 1px solid #05d9e8;
+  border-radius: 20px;
+  padding: 0.2rem 0.7rem;
+}
+
+.compra-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.6rem 0;
+}
+
+.compra-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #f8f8f2;
+  font-size: 0.92rem;
+  padding: 0.3rem 0;
+}
+
+.compra-item-detalle {
+  color: #b1a7d8;
+  font-size: 0.85rem;
+}
+
+.compra-pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid rgba(5, 217, 232, 0.3);
+  padding-top: 0.6rem;
+}
+
+.compra-pie span {
+  color: #b1a7d8;
+  font-size: 0.8rem;
+}
+
+.compra-pie strong {
+  color: #05d9e8;
+  font-size: 1.1rem;
+}
+
+.compra-vacia {
+  color: #b1a7d8;
+  text-align: center;
 }

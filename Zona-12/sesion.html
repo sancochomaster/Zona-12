@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión | Zona 12</title>
+  <link rel="stylesheet" href="../access/CSS/styles.css">
+</head>
+
+<body>
+
+  <header>
+    <img src="../access/imagenes/logo de la marca.png" alt="Logo de la marca Zona 12">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="sesion.html" class="btn-sesion">Iniciar sesión</a></li>
+        <li><a href="administrador.html">Administrador</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SECCIÓN CUENTA DE USUARIO (REGISTRO / LOGIN) -->
+  <section id="sesion">
+    <h2>Mi Cuenta</h2>
+    <p id="sesion-intro" class="intro-sesion">Ingresa con tu correo y contraseña para reservar y consultar con
+      nosotros.</p>
+
+    <div id="sesion-formularios">
+      <!-- LOGIN DE USUARIO -->
+      <form id="form-usuario-login">
+        <h3>Iniciar sesión</h3>
+        <label for="ul-email">Email:</label><br>
+        <input type="email" id="ul-email" placeholder="tu@correo.com" required><br><br>
+
+        <label for="ul-password">Contraseña:</label><br>
+        <input type="password" id="ul-password" placeholder="********" required><br><br>
+
+        <button type="submit">Ingresar</button>
+        <p class="cambio-sesion">¿No tienes cuenta? <a href="#sesion" id="ir-registro">Regístrate</a></p>
+      </form>
+
+      <!-- REGISTRO DE USUARIO -->
+      <form id="form-usuario-registro" style="display: none;">
+        <h3>Crear cuenta</h3>
+        <label for="ur-nombre">Nombre:</label><br>
+        <input type="text" id="ur-nombre" placeholder="Tu nombre" required><br><br>
+
+        <label for="ur-email">Email:</label><br>
+        <input type="email" id="ur-email" placeholder="tu@correo.com" required><br><br>
+
+        <label for="ur-password">Contraseña (mínimo 6 caracteres):</label><br>
+        <input type="password" id="ur-password" placeholder="********" minlength="6" required><br><br>
+
+        <label for="ur-confirmar">Confirmar contraseña:</label><br>
+        <input type="password" id="ur-confirmar" placeholder="********" minlength="6" required><br><br>
+
+        <button type="submit">Registrarme</button>
+        <p class="cambio-sesion">¿Ya tienes cuenta? <a href="#sesion" id="ir-login">Inicia sesión</a></p>
+      </form>
+    </div>
+
+    <!-- VISTA CON SESIÓN INICIADA -->
+    <div id="sesion-activa" style="display: none;">
+      <h3 id="sesion-saludo"></h3>
+      <p id="sesion-correo"></p>
+      <button type="button" id="btn-cerrar-sesion">Cerrar sesión</button>
+
+      <!-- HISTORIAL DE COMPRAS / RESERVAS DEL USUARIO -->
+      <div id="historial-compras">
+        <h3>Mis compras</h3>
+        <div id="lista-compras"></div>
+      </div>
+    </div>
+
+    <p id="sesion-mensaje" role="status"></p>
+  </section>
+
+  <script src="../access/js/main.js"></script>
+</body>
+
+</html>

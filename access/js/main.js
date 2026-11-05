@@ -138,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
         contenedorMensajesAdmin.style.display = 'none';
     }
 
+    // Pestañas del panel: separan los mensajes de contacto de las compras de clientes
+    const tabsAdmin = document.querySelectorAll('.admin-tab');
+
+    tabsAdmin.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabsAdmin.forEach(t => t.classList.remove('activo'));
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('activo'));
+
+            tab.classList.add('activo');
+            const panelDestino = document.getElementById(tab.dataset.panel);
+            if (panelDestino) panelDestino.classList.add('activo');
+        });
+    });
+
     if (formLogin) {
         formLogin.addEventListener('submit', function (evento) {
             evento.preventDefault();
@@ -164,54 +178,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Cada mensaje de contacto se pinta como una tarjeta independiente
     function cargarMensajesAdmin() {
         const listaMensajes = document.getElementById('lista-mensajes');
+        const contador = document.getElementById('contador-mensajes');
         if (!listaMensajes) return;
 
         const mensajesGuardados = JSON.parse(localStorage.getItem('mensajesZona12')) || [];
 
+        if (contador) contador.textContent = mensajesGuardados.length;
+
         if (mensajesGuardados.length === 0) {
-            listaMensajes.innerHTML = '<p style="color: #b1a7d8;">No hay mensajes nuevos en el sistema.</p>';
-        } else {
-            listaMensajes.innerHTML = mensajesGuardados.map((m, index) => `
-                <div style="background: #0d0221; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #32145a;">
-                    <p style="color: #ff2a8d; font-weight: bold;">Mensaje #${index + 1}</p>
-                    <p style="color: #05d9e8;"><strong>De:</strong> ${m.nombre} (${m.email})</p>
-                    <p style="color: #f8f8f2; margin: 0.5rem 0;">${m.mensaje}</p>
-                    <small style="color: #b1a7d8;">Recibido el: ${m.fecha}</small>
+            listaMensajes.innerHTML = '<p class="admin-vacio">No hay mensajes de contacto registrados todavía.</p>';
+            return;
+        }
+
+        listaMensajes.innerHTML = mensajesGuardados.map((m, index) => `
+                <div class="admin-tarjeta">
+                    <p class="admin-tarjeta-titulo">Mensaje #${index + 1}</p>
+                    <p class="admin-dato"><strong>De:</strong> ${m.nombre} (${m.email})</p>
+                    <p class="admin-mensaje-texto">${m.mensaje}</p>
+                    <small class="admin-fecha">Recibido el: ${m.fecha}</small>
                 </div>
             `).join('');
-        }
     }
 
-    // Lista las reservas del catálogo guardadas en localStorage
+    // Lista las compras pagadas del catálogo guardadas en localStorage.
+    // Solo se cuentan las compras con el pago completado (pagado === true).
     function cargarReservasAdmin() {
         const listaReservas = document.getElementById('lista-reservas');
+        const contador = document.getElementById('contador-compras');
         if (!listaReservas) return;
 
         const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
-        const reservasGuardadas = JSON.parse(localStorage.getItem('reservasZona12')) || [];
+        const reservasGuardadas = (JSON.parse(localStorage.getItem('reservasZona12')) || [])
+            .filter(reserva => reserva.pagado === true);
+
+        if (contador) contador.textContent = reservasGuardadas.length;
 
         if (reservasGuardadas.length === 0) {
-            listaReservas.innerHTML = '<p style="color: #b1a7d8;">No hay reservas registradas todavía.</p>';
+            listaReservas.innerHTML = '<p class="admin-vacio">No hay compras pagadas registradas todavía.</p>';
             return;
         }
 
         listaReservas.innerHTML = reservasGuardadas.map((reserva, index) => {
             const filas = reserva.items.map(item => `
-                <p style="color: #f8f8f2; margin: 0.3rem 0;">
-                    <strong style="color: #05d9e8;">${item.tipo}:</strong> ${item.nombre}${item.precio ? ' — ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}
-                </p>
-            `).join('');
+                    <p class="admin-item">
+                        <strong>${item.tipo}:</strong> ${item.nombre}${item.precio ? ' — ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}
+                    </p>
+                `).join('');
 
             const total = reserva.items.reduce((suma, item) => suma + (item.precio || 0), 0);
 
             return `
-                <div style="background: #0d0221; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #32145a;">
-                    <p style="color: #ff2a8d; font-weight: bold;">Reserva #${index + 1} — ${reserva.categoria}</p>
-                    ${filas}
-                    <p style="color: #f8f8f2; margin-top: 0.5rem;"><strong>Total:</strong> ${formatearPrecio(total)}</p>
-                    <small style="color: #b1a7d8;">Fecha: ${reserva.fecha}</small>
+                <div class="admin-tarjeta compra">
+                    <p class="admin-tarjeta-titulo">Compra #${index + 1} — ${reserva.categoria}</p>
+                    <p class="admin-dato"><strong>Cliente:</strong> ${reserva.usuario || 'Invitado'}</p>
+                    <div class="admin-items">${filas}</div>
+                    <p class="admin-total">Total: ${formatearPrecio(total)}</p>
+                    <small class="admin-fecha">Fecha: ${reserva.fecha}</small>
                 </div>
             `;
         }).join('');
@@ -331,5 +356,199 @@ document.addEventListener('DOMContentLoaded', () => {
         tituloNoticia.textContent = noticia.titulo;
         textoNoticia.textContent = noticia.texto;
     }
+
+    // --- 7. CUENTAS DE USUARIO (REGISTRO + LOGIN CON localStorage) ---
+    // OJO: esto es una simulación del lado del cliente (sin servidor). Sirve para
+    // la demo, pero en un sitio real la autenticación debe hacerse en un backend.
+    const CLAVE_USUARIOS = 'usuariosZona12';
+    const CLAVE_SESION = 'sesionZona12';
+
+    const formUsuarioLogin = document.getElementById('form-usuario-login');
+    const formUsuarioRegistro = document.getElementById('form-usuario-registro');
+    const vistaSesionActiva = document.getElementById('sesion-activa');
+    const contenedorFormsSesion = document.getElementById('sesion-formularios');
+    const mensajeSesion = document.getElementById('sesion-mensaje');
+    const botonNavSesion = document.querySelector('.btn-sesion');
+
+    // Hash SHA-256 para no guardar la contraseña en texto plano
+    async function hashear(texto) {
+        if (window.crypto && crypto.subtle) {
+            const datos = new TextEncoder().encode(texto);
+            const buffer = await crypto.subtle.digest('SHA-256', datos);
+            return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        return texto;
+    }
+
+    const leerUsuarios = () => JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || [];
+    const leerSesion = () => JSON.parse(localStorage.getItem(CLAVE_SESION));
+
+    function avisoSesion(texto, esError) {
+        if (!mensajeSesion) return;
+        mensajeSesion.textContent = texto;
+        mensajeSesion.style.color = esError ? '#ff2a8d' : '#05d9e8';
+    }
+
+    // Texto bajo el título "Mi Cuenta" según lo que se esté mostrando
+    function actualizarIntroSesion() {
+        const intro = document.getElementById('sesion-intro');
+        if (!intro) return;
+
+        if (leerSesion()) {
+            intro.textContent = 'Ya iniciaste sesión en Zona 12. Desde aquí puedes cerrarla cuando quieras.';
+        } else if (formUsuarioRegistro && formUsuarioRegistro.style.display === 'block') {
+            intro.textContent = 'Crea tu cuenta con tus datos para empezar a reservar en Zona 12.';
+        } else {
+            intro.textContent = 'Ingresa con tu correo y contraseña para reservar y consultar con nosotros.';
+        }
+    }
+
+    // Historial de compras/reservas del usuario con sesión iniciada
+    function cargarMisCompras(sesion) {
+        const listaCompras = document.getElementById('lista-compras');
+        if (!listaCompras || !sesion) return;
+
+        const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
+        // Solo mostramos las compras ya pagadas por este usuario
+        const reservasGuardadas = (JSON.parse(localStorage.getItem('reservasZona12')) || [])
+            .filter(r => r.pagado === true);
+        const misCompras = reservasGuardadas.filter(r =>
+            r.usuario && sesion.email && r.usuario.includes(sesion.email)
+        );
+
+        if (misCompras.length === 0) {
+            listaCompras.innerHTML = '<p class="compra-vacia">Aún no has realizado compras. ¡Anímate a reservar en el catálogo!</p>';
+            return;
+        }
+
+        listaCompras.innerHTML = misCompras.map((compra, index) => {
+            const filas = compra.items.map(item => `
+                <li>
+                    <span>${item.nombre}</span>
+                    <span class="compra-item-detalle">${item.tipo}${item.precio ? ' · ' + formatearPrecio(item.precio) + ' ' + item.sufijo : ''}</span>
+                </li>
+            `).join('');
+
+            const total = compra.items.reduce((suma, item) => suma + (item.precio || 0), 0);
+
+            return `
+                <article class="compra-tarjeta">
+                    <header class="compra-cabecera">
+                        <span class="compra-numero">Compra #${index + 1}</span>
+                        <span class="compra-categoria">${compra.categoria}</span>
+                    </header>
+                    <ul class="compra-items">${filas}</ul>
+                    <footer class="compra-pie">
+                        <span>${compra.fecha}</span>
+                        <strong>${formatearPrecio(total)}</strong>
+                    </footer>
+                </article>
+            `;
+        }).join('');
+    }
+
+    // Actualiza formularios, vista de cuenta, botón del menú y formulario de contacto
+    function actualizarVistaSesion() {
+        const sesion = leerSesion();
+
+        if (contenedorFormsSesion) contenedorFormsSesion.style.display = sesion ? 'none' : 'block';
+        if (vistaSesionActiva) vistaSesionActiva.style.display = sesion ? 'block' : 'none';
+        actualizarIntroSesion();
+
+        if (sesion) {
+            const saludoEl = document.getElementById('sesion-saludo');
+            const correoEl = document.getElementById('sesion-correo');
+            if (saludoEl) saludoEl.textContent = `¡Hola, ${sesion.nombre}!`;
+            if (correoEl) correoEl.textContent = sesion.email;
+            cargarMisCompras(sesion);
+        }
+
+        if (botonNavSesion) {
+            botonNavSesion.textContent = sesion ? '👤 ' + sesion.nombre.split(' ')[0] : 'Iniciar sesión';
+        }
+
+        // Si hay sesión, rellenamos el formulario de contacto
+        const campoNombre = document.getElementById('nombre');
+        const campoEmail = document.getElementById('email');
+        if (sesion && campoNombre && campoEmail) {
+            if (!campoNombre.value) campoNombre.value = sesion.nombre;
+            if (!campoEmail.value) campoEmail.value = sesion.email;
+        }
+    }
+
+    function mostrarFormularioSesion(cual) {
+        if (!formUsuarioLogin || !formUsuarioRegistro) return;
+        formUsuarioLogin.style.display = cual === 'registro' ? 'none' : 'block';
+        formUsuarioRegistro.style.display = cual === 'registro' ? 'block' : 'none';
+        actualizarIntroSesion();
+        avisoSesion('', false);
+    }
+
+    const irRegistro = document.getElementById('ir-registro');
+    const irLogin = document.getElementById('ir-login');
+    if (irRegistro) irRegistro.addEventListener('click', (e) => { e.preventDefault(); mostrarFormularioSesion('registro'); });
+    if (irLogin) irLogin.addEventListener('click', (e) => { e.preventDefault(); mostrarFormularioSesion('login'); });
+
+    if (formUsuarioRegistro) {
+        formUsuarioRegistro.addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+
+            const nombre = document.getElementById('ur-nombre').value.trim();
+            const email = document.getElementById('ur-email').value.trim().toLowerCase();
+            const password = document.getElementById('ur-password').value;
+            const confirmar = document.getElementById('ur-confirmar').value;
+
+            if (password.length < 6) return avisoSesion('La contraseña debe tener al menos 6 caracteres.', true);
+            if (password !== confirmar) return avisoSesion('Las contraseñas no coinciden.', true);
+
+            const usuarios = leerUsuarios();
+            if (usuarios.some(u => u.email === email)) {
+                return avisoSesion('Ya existe una cuenta con ese correo.', true);
+            }
+
+            usuarios.push({
+                nombre,
+                email,
+                clave: await hashear(password),
+                fecha: new Date().toLocaleDateString('es-CO')
+            });
+            localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
+
+            // Después de registrarse, se inicia sesión automáticamente
+            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre, email }));
+            formUsuarioRegistro.reset();
+            avisoSesion('¡Cuenta creada! Ya iniciaste sesión.', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    if (formUsuarioLogin) {
+        formUsuarioLogin.addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+
+            const email = document.getElementById('ul-email').value.trim().toLowerCase();
+            const clave = await hashear(document.getElementById('ul-password').value);
+            const usuario = leerUsuarios().find(u => u.email === email && u.clave === clave);
+
+            if (!usuario) return avisoSesion('Correo o contraseña incorrectos.', true);
+
+            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre: usuario.nombre, email: usuario.email }));
+            formUsuarioLogin.reset();
+            avisoSesion('', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+    if (btnCerrarSesion) {
+        btnCerrarSesion.addEventListener('click', () => {
+            localStorage.removeItem(CLAVE_SESION);
+            mostrarFormularioSesion('login');
+            avisoSesion('Sesión cerrada.', false);
+            actualizarVistaSesion();
+        });
+    }
+
+    actualizarVistaSesion();
 
 });

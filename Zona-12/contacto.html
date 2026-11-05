@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | Zona 12</title>
+  <link rel="stylesheet" href="../access/CSS/styles.css">
+</head>
+
+<body>
+
+  <header>
+    <img src="../access/imagenes/logo de la marca.png" alt="Logo de la marca Zona 12">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="sesion.html" class="btn-sesion">Iniciar sesión</a></li>
+        <li><a href="administrador.html">Administrador</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SECCIÓN CONTACTO -->
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <p>Para contactarte con nosotros, puedes enviarnos un mensaje a través del siguiente formulario:</p>
+
+    <form id="form-contacto">
+      <label for="nombre">Nombre:</label><br>
+      <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required><br><br>
+
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" placeholder="tu@correo.com" required><br><br>
+
+      <label for="mensaje">Mensaje:</label><br>
+      <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿Qué deseas consultar o reservar?"
+        required></textarea><br><br>
+
+      <button type="submit">Enviar mensaje</button>
+    </form>
+  </section>
+
+  <script src="../access/js/main.js"></script>
+</body>
+
+</html>

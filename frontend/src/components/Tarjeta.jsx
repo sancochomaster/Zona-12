@@ -15,7 +15,7 @@ function ListaSpecs({ specs }) {
   )
 }
 
-function Tarjeta({ item, esEstacion, seleccionado }) {
+function Tarjeta({ item, esEstacion, seleccionado, desplegada, onSeleccionar, onAlternarDesplegar }) {
   const disponible = !item.estado || item.estado === 'Disponible'
   const precio = item.precio ? (
     <p className="precio-estacion">
@@ -24,8 +24,13 @@ function Tarjeta({ item, esEstacion, seleccionado }) {
   ) : null
 
   if (esEstacion) {
+    // En las estaciones, hacer clic en la tarjeta la despliega.
+    // El botón de seleccionar no despliega (corta la propagación del clic).
     return (
-      <div className={`estacion-gamer ${disponible ? 'disponible' : 'ocupada'} tarjeta-seleccion ${seleccionado ? 'seleccionada' : ''}`}>
+      <div
+        className={`estacion-gamer ${disponible ? 'disponible' : 'ocupada'} tarjeta-seleccion ${seleccionado ? 'seleccionada' : ''} ${desplegada ? 'desplegada' : ''}`}
+        onClick={onAlternarDesplegar}
+      >
         <div className="monitor-icon">
           <div className="pantalla">
             <span className="num-pc">{item.titulo.split('#')[1] || ''}</span>
@@ -37,7 +42,15 @@ function Tarjeta({ item, esEstacion, seleccionado }) {
           <ListaSpecs specs={item.specs} />
           {item.detalle ? <p>{item.detalle}</p> : null}
           {precio}
-          <button type="button" className="btn-seleccion" disabled={!disponible}>
+          <button
+            type="button"
+            className="btn-seleccion"
+            disabled={!disponible}
+            onClick={(evento) => {
+              evento.stopPropagation()
+              onSeleccionar()
+            }}
+          >
             {disponible ? (seleccionado ? 'Quitar' : 'Seleccionar') : 'No disponible'}
           </button>
         </div>
@@ -46,7 +59,10 @@ function Tarjeta({ item, esEstacion, seleccionado }) {
   }
 
   return (
-    <article className={`tarjeta-seleccion ${disponible ? '' : 'ocupada'} ${seleccionado ? 'seleccionada' : ''}`}>
+    <article
+      className={`tarjeta-seleccion ${disponible ? '' : 'ocupada'} ${seleccionado ? 'seleccionada' : ''}`}
+      onClick={onSeleccionar}
+    >
       {item.estado ? (
         <span className={`estado ${disponible ? 'estado-disponible' : 'estado-ocupada'}`}>{item.estado}</span>
       ) : null}

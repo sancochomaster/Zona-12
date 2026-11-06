@@ -1,7 +1,33 @@
 // Tarjeta lateral izquierda con la cuenta atrás para el lanzamiento de GTA 6.
+// El tiempo se recalcula cada segundo con un intervalo (setInterval).
+
+import { useEffect, useState } from 'react'
+import { fechaGTA6 } from '../data/catalogo'
+import { dosDigitos } from '../utils/formato'
+
+// Calcula cuánto falta para el lanzamiento de GTA 6.
+function calcularTiempo() {
+  const restante = new Date(fechaGTA6) - new Date()
+
+  if (restante <= 0) {
+    return { dias: '00', horas: '00', min: '00', seg: '00' }
+  }
+
+  return {
+    dias: dosDigitos(Math.floor(restante / (1000 * 60 * 60 * 24))),
+    horas: dosDigitos(Math.floor(restante / (1000 * 60 * 60)) % 24),
+    min: dosDigitos(Math.floor(restante / (1000 * 60)) % 60),
+    seg: dosDigitos(Math.floor(restante / 1000) % 60),
+  }
+}
 
 function ContadorGTA6() {
-  const tiempo = { dias: '00', horas: '00', min: '00', seg: '00' }
+  const [tiempo, setTiempo] = useState(calcularTiempo)
+
+  useEffect(() => {
+    const intervalo = setInterval(() => setTiempo(calcularTiempo()), 1000)
+    return () => clearInterval(intervalo)
+  }, [])
 
   return (
     <article className="tarjeta-lateral tarjeta-gta">

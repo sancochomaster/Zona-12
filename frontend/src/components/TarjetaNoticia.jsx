@@ -1,9 +1,15 @@
 // Tarjeta lateral derecha con una noticia gamer tomada al azar.
+// La noticia se elige una sola vez, cuando la tarjeta aparece en pantalla.
 
+import { useState } from 'react'
 import { noticiasGamer } from '../data/catalogo'
 
+function elegirNoticiaAlAzar() {
+  return noticiasGamer[Math.floor(Math.random() * noticiasGamer.length)]
+}
+
 function TarjetaNoticia() {
-  const noticia = noticiasGamer[Math.floor(Math.random() * noticiasGamer.length)]
+  const [noticia] = useState(elegirNoticiaAlAzar)
 
   return (
     <article className="tarjeta-lateral tarjeta-noticia">

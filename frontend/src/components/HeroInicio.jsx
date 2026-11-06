@@ -1,6 +1,8 @@
 // Contenido central del inicio: título, descripción, botones de acción y estadísticas.
+// "Ver Catálogo" baja a la sección del catálogo (ancla dentro de la misma página).
+// "Reserva / Contacto" cambia a la vista de contacto.
 
-function HeroInicio() {
+function HeroInicio({ onNavegar }) {
   return (
     <div className="hero-contenido">
       <h1>ZONA 12 <span>// El Núcleo Gamer de Cali</span></h1>
@@ -10,7 +12,16 @@ function HeroInicio() {
 
       <div className="cta-inicio">
         <a className="cta-principal" href="#catalogo">Ver Catálogo</a>
-        <a className="cta-secundario" href="#contacto">Reserva / Contacto</a>
+        <a
+          className="cta-secundario"
+          href="#contacto"
+          onClick={(evento) => {
+            evento.preventDefault()
+            onNavegar('contacto')
+          }}
+        >
+          Reserva / Contacto
+        </a>
       </div>
 
       <ul className="stats-inicio">

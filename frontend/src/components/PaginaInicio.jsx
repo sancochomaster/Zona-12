@@ -5,16 +5,16 @@ import HeroInicio from './HeroInicio'
 import TarjetaNoticia from './TarjetaNoticia'
 import Catalogo from './Catalogo'
 
-function PaginaInicio() {
+function PaginaInicio({ sesion, onNavegar }) {
   return (
     <>
       <section id="inicio">
         <ContadorGTA6 />
-        <HeroInicio />
+        <HeroInicio onNavegar={onNavegar} />
         <TarjetaNoticia />
       </section>
 
-      <Catalogo />
+      <Catalogo sesion={sesion} onNavegar={onNavegar} />
     </>
   )
 }

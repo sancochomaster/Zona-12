@@ -4,9 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { formatearPrecio } from '../utils/formato'
-
-// Dirección del servidor backend (Express).
-const API = 'http://localhost:4000'
+import { obtenerReservasDe, registrarUsuario, ingresarUsuario } from '../api'
 
 function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
   // Qué formulario se muestra cuando NO hay sesión.
@@ -24,21 +22,24 @@ function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
   const [regPassword, setRegPassword] = useState('')
   const [regConfirmar, setRegConfirmar] = useState('')
 
-  // Compras del usuario con sesión iniciada.
-  const [compras, setCompras] = useState([])
+  // Compras del usuario con sesión iniciada (null = todavía cargando).
+  const [compras, setCompras] = useState(null)
+  const [errorCompras, setErrorCompras] = useState('')
 
-  // Cuando hay sesión, se cargan las compras pagadas de ese correo.
+  // Cuando hay sesión, se cargan las compras pagadas de ese correo desde la base de datos.
   useEffect(() => {
     if (!sesion) return
 
     let activo = true
-    fetch(API + '/api/reservas?email=' + encodeURIComponent(sesion.email))
-      .then((respuesta) => respuesta.json())
+    obtenerReservasDe(sesion.email)
       .then((datos) => {
         if (activo) setCompras(Array.isArray(datos) ? datos : [])
       })
       .catch(() => {
-        if (activo) setCompras([])
+        if (activo) {
+          setCompras([])
+          setErrorCompras('No se pudieron cargar tus compras. Revisa tu conexión e inténtalo de nuevo.')
+        }
       })
 
     return () => {
@@ -66,14 +67,7 @@ function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
     if (regPassword !== regConfirmar) return avisar('Las contraseñas no coinciden.', true)
 
     try {
-      const respuesta = await fetch(API + '/api/usuarios/registro', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, password: regPassword }),
-      })
-      const datos = await respuesta.json()
-
-      if (!respuesta.ok) return avisar(datos.error || 'No se pudo crear la cuenta.', true)
+      const datos = await registrarUsuario({ nombre, email, password: regPassword })
 
       onIniciarSesion(datos)
       setRegNombre('')
@@ -81,8 +75,8 @@ function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
       setRegPassword('')
       setRegConfirmar('')
       avisar('¡Cuenta creada! Ya iniciaste sesión.', false)
-    } catch {
-      avisar('No se pudo conectar con el servidor.', true)
+    } catch (error) {
+      avisar(error.message, true)
     }
   }
 
@@ -92,27 +86,22 @@ function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
     const email = loginEmail.trim().toLowerCase()
 
     try {
-      const respuesta = await fetch(API + '/api/usuarios/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: loginPassword }),
-      })
-      const datos = await respuesta.json()
-
-      if (!respuesta.ok) return avisar(datos.error || 'Correo o contraseña incorrectos.', true)
+      const datos = await ingresarUsuario({ email, password: loginPassword })
 
       onIniciarSesion(datos)
       setLoginEmail('')
       setLoginPassword('')
       avisar('', false)
-    } catch {
-      avisar('No se pudo conectar con el servidor.', true)
+    } catch (error) {
+      avisar(error.message, true)
     }
   }
 
   function cerrar() {
     onCerrarSesion()
     setModo('login')
+    setCompras(null)
+    setErrorCompras('')
     avisar('Sesión cerrada.', false)
   }
 
@@ -241,7 +230,11 @@ function PaginaSesion({ sesion, onIniciarSesion, onCerrarSesion }) {
           <div id="historial-compras">
             <h3>Mis compras</h3>
             <div id="lista-compras">
-              {compras.length === 0 ? (
+              {compras === null ? (
+                <p className="compra-vacia">Cargando tus compras…</p>
+              ) : errorCompras ? (
+                <p className="compra-vacia">{errorCompras}</p>
+              ) : compras.length === 0 ? (
                 <p className="compra-vacia">Aún no has realizado compras. ¡Anímate a reservar en el catálogo!</p>
               ) : (
                 compras.map((compra, indice) => {

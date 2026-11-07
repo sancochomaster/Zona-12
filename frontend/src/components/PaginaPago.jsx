@@ -3,9 +3,7 @@
 
 import { useState } from 'react'
 import { formatearPrecio } from '../utils/formato'
-
-// Dirección del servidor backend (Express).
-const API = 'http://localhost:4000'
+import { crearReserva } from '../api'
 
 // Lee la compra pendiente guardada por el catálogo.
 function leerCompraPendiente() {
@@ -31,12 +29,7 @@ function PaginaPago({ onNavegar }) {
 
     // Registramos la compra pagada en la base de datos: esta es la que ve el administrador.
     try {
-      const respuesta = await fetch(API + '/api/reservas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(compra),
-      })
-      if (!respuesta.ok) throw new Error('No se pudo registrar la compra')
+      await crearReserva(compra)
     } catch {
       window.alert('No se pudo completar el pago. Revisa tu conexión e inténtalo de nuevo.')
       return

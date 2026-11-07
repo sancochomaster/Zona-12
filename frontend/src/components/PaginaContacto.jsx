@@ -2,9 +2,7 @@
 // Los campos son controlados con useState y el envío se hace con fetch.
 
 import { useState } from 'react'
-
-// Dirección del servidor backend (Express).
-const API = 'http://localhost:4000'
+import { enviarMensaje } from '../api'
 
 function PaginaContacto({ sesion }) {
   const [nombre, setNombre] = useState(sesion ? sesion.nombre : '')
@@ -15,12 +13,7 @@ function PaginaContacto({ sesion }) {
     evento.preventDefault()
 
     try {
-      const respuesta = await fetch(API + '/api/mensajes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, mensaje }),
-      })
-      if (!respuesta.ok) throw new Error('No se pudo guardar')
+      await enviarMensaje({ nombre, email, mensaje })
 
       window.alert(`¡Gracias, ${nombre}! Tu mensaje fue enviado y registrado en el sistema.`)
       setNombre('')

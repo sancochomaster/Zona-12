@@ -3,9 +3,7 @@
 
 import { useEffect, useState } from 'react'
 import { formatearPrecio } from '../utils/formato'
-
-// Dirección del servidor backend (Express).
-const API = 'http://localhost:4000'
+import { obtenerMensajes, obtenerReservas } from '../api'
 
 function PaginaAdministrador() {
   const [usuario, setUsuario] = useState('')
@@ -13,8 +11,10 @@ function PaginaAdministrador() {
   const [conectado, setConectado] = useState(false)
   const [tab, setTab] = useState('panel-mensajes')
 
-  const [mensajes, setMensajes] = useState([])
-  const [reservas, setReservas] = useState([])
+  // null = todavía cargando.
+  const [mensajes, setMensajes] = useState(null)
+  const [reservas, setReservas] = useState(null)
+  const [error, setError] = useState('')
 
   // Al entrar al panel se cargan los mensajes y las compras desde la base de datos.
   useEffect(() => {
@@ -22,22 +22,14 @@ function PaginaAdministrador() {
 
     let activo = true
 
-    fetch(API + '/api/mensajes')
-      .then((respuesta) => respuesta.json())
-      .then((datos) => {
-        if (activo) setMensajes(Array.isArray(datos) ? datos : [])
+    Promise.all([obtenerMensajes(), obtenerReservas()])
+      .then(([listaMensajes, listaReservas]) => {
+        if (!activo) return
+        setMensajes(Array.isArray(listaMensajes) ? listaMensajes : [])
+        setReservas(Array.isArray(listaReservas) ? listaReservas : [])
       })
       .catch(() => {
-        if (activo) setMensajes([])
-      })
-
-    fetch(API + '/api/reservas')
-      .then((respuesta) => respuesta.json())
-      .then((datos) => {
-        if (activo) setReservas(Array.isArray(datos) ? datos : [])
-      })
-      .catch(() => {
-        if (activo) setReservas([])
+        if (activo) setError('No se pudieron cargar los datos. Revisa tu conexión e inténtalo de nuevo.')
       })
 
     return () => {
@@ -103,21 +95,25 @@ function PaginaAdministrador() {
               className={`admin-tab ${tab === 'panel-mensajes' ? 'activo' : ''}`}
               onClick={() => setTab('panel-mensajes')}
             >
-              Mensajes de Contacto <span className="admin-contador">{mensajes.length}</span>
+              Mensajes de Contacto <span className="admin-contador">{mensajes ? mensajes.length : 0}</span>
             </button>
             <button
               type="button"
               className={`admin-tab ${tab === 'panel-compras' ? 'activo' : ''}`}
               onClick={() => setTab('panel-compras')}
             >
-              Compras de Clientes <span className="admin-contador">{reservas.length}</span>
+              Compras de Clientes <span className="admin-contador">{reservas ? reservas.length : 0}</span>
             </button>
           </div>
 
           {/* PANEL: MENSAJES DE CONTACTO */}
           <div id="panel-mensajes" className={`admin-panel ${tab === 'panel-mensajes' ? 'activo' : ''}`}>
             <div id="lista-mensajes">
-              {mensajes.length === 0 ? (
+              {error ? (
+                <p className="admin-vacio">{error}</p>
+              ) : mensajes === null ? (
+                <p className="admin-vacio">Cargando mensajes…</p>
+              ) : mensajes.length === 0 ? (
                 <p className="admin-vacio">No hay mensajes de contacto registrados todavía.</p>
               ) : (
                 mensajes.map((mensaje, indice) => (
@@ -135,7 +131,11 @@ function PaginaAdministrador() {
           {/* PANEL: COMPRAS DE CLIENTES */}
           <div id="panel-compras" className={`admin-panel ${tab === 'panel-compras' ? 'activo' : ''}`}>
             <div id="lista-reservas">
-              {reservas.length === 0 ? (
+              {error ? (
+                <p className="admin-vacio">{error}</p>
+              ) : reservas === null ? (
+                <p className="admin-vacio">Cargando compras…</p>
+              ) : reservas.length === 0 ? (
                 <p className="admin-vacio">No hay compras pagadas registradas todavía.</p>
               ) : (
                 reservas.map((reserva, indice) => {

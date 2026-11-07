@@ -1,0 +1,11 @@
+# Dependencias instaladas
+node_modules/
+
+# Variables de entorno (credenciales): nunca se suben
+.env
+
+# Carpeta de compilación de Vite
+dist/
+
+# Archivos de registro
+*.log

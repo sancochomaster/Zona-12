@@ -4,6 +4,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Dirección del servidor backend (Express). Cámbiala si usas otro puerto.
+    const API = 'http://localhost:4000';
+
     // --- 1. NAVEGACIÓN CON DESPLAZAMIENTO SUAVE + ANIMACIÓN DE ENTRADA ---
     const enlacesNav = document.querySelectorAll('header nav a');
 
@@ -107,26 +110,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const formContacto = document.getElementById('form-contacto');
 
     if (formContacto) {
-        formContacto.addEventListener('submit', function (evento) {
+        formContacto.addEventListener('submit', async function (evento) {
             evento.preventDefault();
 
             const nombre = document.getElementById('nombre').value;
             const email = document.getElementById('email').value;
             const mensaje = document.getElementById('mensaje') ? document.getElementById('mensaje').value : 'Sin mensaje';
 
-            const nuevoMensaje = {
-                nombre,
-                email,
-                mensaje,
-                fecha: new Date().toLocaleDateString()
-            };
+            // El mensaje se guarda en la base de datos a través de la API
+            try {
+                const respuesta = await fetch(API + '/api/mensajes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre, email, mensaje })
+                });
+                if (!respuesta.ok) throw new Error('No se pudo guardar');
 
-            let mensajesGuardados = JSON.parse(localStorage.getItem('mensajesZona12')) || [];
-            mensajesGuardados.push(nuevoMensaje);
-            localStorage.setItem('mensajesZona12', JSON.stringify(mensajesGuardados));
-
-            alert(`¡Gracias, ${nombre}! Tu mensaje fue enviado y registrado en el sistema.`);
-            formContacto.reset();
+                alert(`¡Gracias, ${nombre}! Tu mensaje fue enviado y registrado en el sistema.`);
+                formContacto.reset();
+            } catch (error) {
+                alert('No se pudo enviar el mensaje. Revisa tu conexión e inténtalo de nuevo.');
+            }
         });
     }
 
@@ -179,12 +183,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Cada mensaje de contacto se pinta como una tarjeta independiente
-    function cargarMensajesAdmin() {
+    async function cargarMensajesAdmin() {
         const listaMensajes = document.getElementById('lista-mensajes');
         const contador = document.getElementById('contador-mensajes');
         if (!listaMensajes) return;
 
-        const mensajesGuardados = JSON.parse(localStorage.getItem('mensajesZona12')) || [];
+        let mensajesGuardados = [];
+        try {
+            const respuesta = await fetch(API + '/api/mensajes');
+            mensajesGuardados = await respuesta.json();
+        } catch (error) {
+            listaMensajes.innerHTML = '<p class="admin-vacio">No se pudieron cargar los mensajes.</p>';
+            return;
+        }
 
         if (contador) contador.textContent = mensajesGuardados.length;
 
@@ -203,16 +214,23 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
     }
 
-    // Lista las compras pagadas del catálogo guardadas en localStorage.
-    // Solo se cuentan las compras con el pago completado (pagado === true).
-    function cargarReservasAdmin() {
+    // Lista las compras pagadas leídas desde la base de datos.
+    // El servidor solo devuelve las compras con el pago completado (pagado: true).
+    async function cargarReservasAdmin() {
         const listaReservas = document.getElementById('lista-reservas');
         const contador = document.getElementById('contador-compras');
         if (!listaReservas) return;
 
         const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
-        const reservasGuardadas = (JSON.parse(localStorage.getItem('reservasZona12')) || [])
-            .filter(reserva => reserva.pagado === true);
+
+        let reservasGuardadas = [];
+        try {
+            const respuesta = await fetch(API + '/api/reservas');
+            reservasGuardadas = await respuesta.json();
+        } catch (error) {
+            listaReservas.innerHTML = '<p class="admin-vacio">No se pudieron cargar las compras.</p>';
+            return;
+        }
 
         if (contador) contador.textContent = reservasGuardadas.length;
 
@@ -357,10 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
         textoNoticia.textContent = noticia.texto;
     }
 
-    // --- 7. CUENTAS DE USUARIO (REGISTRO + LOGIN CON localStorage) ---
-    // OJO: esto es una simulación del lado del cliente (sin servidor). Sirve para
-    // la demo, pero en un sitio real la autenticación debe hacerse en un backend.
-    const CLAVE_USUARIOS = 'usuariosZona12';
+    // --- 7. CUENTAS DE USUARIO (REGISTRO + LOGIN CON LA BASE DE DATOS) ---
+    // Los usuarios se guardan en MongoDB a través de la API. La sesión (quién está
+    // conectado) sí se mantiene en el navegador con localStorage.
     const CLAVE_SESION = 'sesionZona12';
 
     const formUsuarioLogin = document.getElementById('form-usuario-login');
@@ -370,17 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mensajeSesion = document.getElementById('sesion-mensaje');
     const botonNavSesion = document.querySelector('.btn-sesion');
 
-    // Hash SHA-256 para no guardar la contraseña en texto plano
-    async function hashear(texto) {
-        if (window.crypto && crypto.subtle) {
-            const datos = new TextEncoder().encode(texto);
-            const buffer = await crypto.subtle.digest('SHA-256', datos);
-            return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-        return texto;
-    }
-
-    const leerUsuarios = () => JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || [];
     const leerSesion = () => JSON.parse(localStorage.getItem(CLAVE_SESION));
 
     function avisoSesion(texto, esError) {
@@ -404,17 +410,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Historial de compras/reservas del usuario con sesión iniciada
-    function cargarMisCompras(sesion) {
+    async function cargarMisCompras(sesion) {
         const listaCompras = document.getElementById('lista-compras');
         if (!listaCompras || !sesion) return;
 
         const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
-        // Solo mostramos las compras ya pagadas por este usuario
-        const reservasGuardadas = (JSON.parse(localStorage.getItem('reservasZona12')) || [])
-            .filter(r => r.pagado === true);
-        const misCompras = reservasGuardadas.filter(r =>
-            r.usuario && sesion.email && r.usuario.includes(sesion.email)
-        );
+
+        // El servidor devuelve solo las compras pagadas de este correo
+        let misCompras = [];
+        try {
+            const respuesta = await fetch(API + '/api/reservas?email=' + encodeURIComponent(sesion.email));
+            misCompras = await respuesta.json();
+        } catch (error) {
+            listaCompras.innerHTML = '<p class="compra-vacia">No se pudieron cargar tus compras.</p>';
+            return;
+        }
 
         if (misCompras.length === 0) {
             listaCompras.innerHTML = '<p class="compra-vacia">Aún no has realizado compras. ¡Anímate a reservar en el catálogo!</p>';
@@ -501,24 +511,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (password.length < 6) return avisoSesion('La contraseña debe tener al menos 6 caracteres.', true);
             if (password !== confirmar) return avisoSesion('Las contraseñas no coinciden.', true);
 
-            const usuarios = leerUsuarios();
-            if (usuarios.some(u => u.email === email)) {
-                return avisoSesion('Ya existe una cuenta con ese correo.', true);
+            // El registro se guarda en la base de datos mediante la API
+            try {
+                const respuesta = await fetch(API + '/api/usuarios/registro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre, email, password })
+                });
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) return avisoSesion(datos.error || 'No se pudo crear la cuenta.', true);
+
+                // Después de registrarse, se inicia sesión automáticamente
+                localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre: datos.nombre, email: datos.email }));
+                formUsuarioRegistro.reset();
+                avisoSesion('¡Cuenta creada! Ya iniciaste sesión.', false);
+                actualizarVistaSesion();
+            } catch (error) {
+                avisoSesion('No se pudo conectar con el servidor.', true);
             }
-
-            usuarios.push({
-                nombre,
-                email,
-                clave: await hashear(password),
-                fecha: new Date().toLocaleDateString('es-CO')
-            });
-            localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
-
-            // Después de registrarse, se inicia sesión automáticamente
-            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre, email }));
-            formUsuarioRegistro.reset();
-            avisoSesion('¡Cuenta creada! Ya iniciaste sesión.', false);
-            actualizarVistaSesion();
         });
     }
 
@@ -527,15 +538,26 @@ document.addEventListener('DOMContentLoaded', () => {
             evento.preventDefault();
 
             const email = document.getElementById('ul-email').value.trim().toLowerCase();
-            const clave = await hashear(document.getElementById('ul-password').value);
-            const usuario = leerUsuarios().find(u => u.email === email && u.clave === clave);
+            const password = document.getElementById('ul-password').value;
 
-            if (!usuario) return avisoSesion('Correo o contraseña incorrectos.', true);
+            // El login se valida contra la base de datos mediante la API
+            try {
+                const respuesta = await fetch(API + '/api/usuarios/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const datos = await respuesta.json();
 
-            localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre: usuario.nombre, email: usuario.email }));
-            formUsuarioLogin.reset();
-            avisoSesion('', false);
-            actualizarVistaSesion();
+                if (!respuesta.ok) return avisoSesion(datos.error || 'Correo o contraseña incorrectos.', true);
+
+                localStorage.setItem(CLAVE_SESION, JSON.stringify({ nombre: datos.nombre, email: datos.email }));
+                formUsuarioLogin.reset();
+                avisoSesion('', false);
+                actualizarVistaSesion();
+            } catch (error) {
+                avisoSesion('No se pudo conectar con el servidor.', true);
+            }
         });
     }
 

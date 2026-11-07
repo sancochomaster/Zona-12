@@ -40,8 +40,6 @@ a React + Vite) y las cosas que conviene tener en cuenta.
 - **Aviso de lint intencional:** `npm run lint` deja 1 aviso en
   `src/components/Categoria.jsx` (`react/set-state-in-effect`). Es a propósito:
   sirve para disparar la animación de entrada de cada categoría. **0 errores.**
-- **Acceso admin:** usuario `admin`, contraseña `1234` (igual que en la versión
-  original).
 - **Carpetas `Zona-12/` y `access/`:** se conservan como referencia de la
   versión vanilla; no son parte de la app en React.
 - **El puerto de Vite** puede mostrarse como 5174 si el 5173 está ocupado; el

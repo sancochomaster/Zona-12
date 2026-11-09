@@ -13,22 +13,9 @@ const PUERTO = process.env.PORT || 4000;
 // Permite leer JSON en el cuerpo de las peticiones (las de la API)
 app.use(express.json());
 
-// Orígenes que pueden consultar la API.
-// En local son los de Vite; en producción se agregan los dominios publicados
-// con la variable FRONTEND_URL (varios dominios separados por coma).
-const origenesLocal = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'http://localhost:5174',
-    'http://127.0.0.1:5174',
-];
-const origenesPublicados = (process.env.FRONTEND_URL || '')
-    .split(',')
-    .map((origen) => origen.trim())
-    .filter(Boolean);
-
+// Permite que el frontend de React (Vite, localhost:5173) consulte la API
 app.use(cors({
-    origin: [...origenesLocal, ...origenesPublicados]
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173']
 }));
 
 // Cifra una contraseña para no guardarla en texto plano

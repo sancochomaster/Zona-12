@@ -31,7 +31,7 @@ function ContadorGTA6() {
 
   return (
     <article className="tarjeta-lateral tarjeta-gta">
-      <img src={import.meta.env.BASE_URL + 'img/elgta.png'} alt="GTA 6" />
+      <img src="/img/elgta.png" alt="GTA 6" />
       <div className="tarjeta-texto">
         <h3>GTA 6</h3>
         <p>Cuenta atrás para el lanzamiento</p>

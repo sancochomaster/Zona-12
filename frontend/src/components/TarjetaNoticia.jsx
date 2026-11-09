@@ -13,7 +13,7 @@ function TarjetaNoticia() {
 
   return (
     <article className="tarjeta-lateral tarjeta-noticia">
-      <img src={import.meta.env.BASE_URL + 'img/notificasfoto.png'} alt="Noticia del mundo gamer" />
+      <img src="/img/notificasfoto.png" alt="Noticia del mundo gamer" />
       <div className="tarjeta-texto">
         <span className="etiqueta-noticia">Noticia gamer</span>
         <h3>{noticia.titulo}</h3>

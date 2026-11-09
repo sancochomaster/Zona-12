@@ -14,7 +14,7 @@ function Header({ sesion, onNavegar }) {
 
   return (
     <header>
-      <img src={import.meta.env.BASE_URL + 'img/logo de la marca.png'} alt="Logo de la marca Zona 12" />
+      <img src="/img/logo de la marca.png" alt="Logo de la marca Zona 12" />
       <nav>
         <ul>
           {enlaces.map((enlace) => (

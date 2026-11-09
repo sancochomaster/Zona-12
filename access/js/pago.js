@@ -5,9 +5,6 @@
 
 const formatearPrecio = (valor) => '$' + valor.toLocaleString('es-CO');
 
-// Dirección del servidor backend (Express). Cámbiala si usas otro puerto.
-const API = 'http://localhost:4000';
-
 document.addEventListener('DOMContentLoaded', () => {
     const resumen = document.getElementById('pago-resumen');
     const formPago = document.getElementById('form-pago');
@@ -51,23 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Al enviar el formulario damos el pago por completado
     if (formPago) {
-        formPago.addEventListener('submit', async (evento) => {
+        formPago.addEventListener('submit', (evento) => {
             evento.preventDefault();
 
-            // Registramos la compra pagada en la base de datos: esta es la que ve el administrador
-            try {
-                const respuesta = await fetch(API + '/api/reservas', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(compra)
-                });
-                if (!respuesta.ok) throw new Error('No se pudo registrar la compra');
-            } catch (error) {
-                alert('No se pudo completar el pago. Revisa tu conexión e inténtalo de nuevo.');
-                return;
-            }
+            // Registramos la compra pagada: esta es la que ve el administrador
+            const reservasGuardadas = JSON.parse(localStorage.getItem('reservasZona12')) || [];
+            reservasGuardadas.push({ ...compra, pagado: true });
+            localStorage.setItem('reservasZona12', JSON.stringify(reservasGuardadas));
 
-            // Ya está pagada, se elimina la compra pendiente del navegador
+            // Ya está pagada, se elimina la compra pendiente
             localStorage.removeItem('pagoPendienteZona12');
 
             formPago.style.display = 'none';

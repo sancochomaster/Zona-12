@@ -1,9 +1,10 @@
 // App.jsx — punto de entrada de la página de Zona 12.
 // Aquí vive el estado de la vista activa (qué página se muestra) y la sesión
-// del usuario. El encabezado y el botón "volver arriba" son compartidos.
+// del usuario. El encabezado, el pie de página y el botón "volver arriba" son compartidos.
 
 import { useEffect, useState } from 'react'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import BotonArriba from './components/BotonArriba'
 import PaginaInicio from './components/PaginaInicio'
 import PaginaContacto from './components/PaginaContacto'
@@ -56,6 +57,7 @@ function App() {
       {vista === 'administrador' && <PaginaAdministrador />}
       {vista === 'pago' && <PaginaPago onNavegar={setVista} />}
 
+      <Footer onNavegar={setVista} />
       <BotonArriba />
     </>
   )

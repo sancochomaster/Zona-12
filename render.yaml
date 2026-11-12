@@ -1,0 +1,14 @@
+# Configuración del backend (Express + MongoDB) en Render.
+# Se usa al crear el servicio con "New > Blueprint" apuntando a este repositorio.
+# El código del servidor está en backend/src/server.js, por eso rootDir es backend.
+services:
+  - type: web
+    name: zona-12-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      # Se completa a mano en el panel de Render (no se guarda en el repo).
+      - key: MONGODB_URI
+        sync: false

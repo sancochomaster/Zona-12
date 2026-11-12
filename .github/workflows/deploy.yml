@@ -1,0 +1,68 @@
+# Compila el frontend (React + Vite) y lo publica en GitHub Pages.
+# Nota: GitHub Pages solo sirve archivos estáticos; el backend de Express + MongoDB
+# no se publica aquí, por eso la URL de la API se pasa con la variable VITE_API_URL.
+name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches: [migracion-react]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si subes varios cambios seguidos, solo se publica el último.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Instalar dependencias del frontend
+        working-directory: frontend
+        run: npm ci
+
+      - name: Compilar el frontend
+        working-directory: frontend
+        # VITE_API_URL es una variable del repositorio (Settings > Secrets and
+        # variables > Actions > Variables). Si no existe, el sitio usará
+        # http://localhost:4000 y las funciones con backend fallarán.
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+        run: npm run build
+
+      - name: Desactivar el procesamiento de Jekyll
+        run: touch frontend/dist/.nojekyll
+
+      - name: Guardar el sitio compilado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacion.outputs.page_url }}
+    steps:
+      - name: Subir el sitio a GitHub Pages
+        id: publicacion
+        uses: actions/deploy-pages@v4

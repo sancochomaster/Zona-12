@@ -1940,3 +1940,336 @@ nav a.btn-sesion:hover {
   font-size: 0.82rem;
   color: #b1a7d8;
 }
+
+/* ==========================================
+   DISEÑO PARA CELULAR (RESPONSIVE)
+   ========================================== */
+
+/* --- Botón hamburguesa del menú (solo aparece en el celular) --- */
+.btn-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 46px;
+  height: 46px;
+  padding: 6px 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-menu span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background-color: #f8f8f2;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.btn-menu:hover {
+  border-color: #05d9e8;
+  box-shadow: 0 0 14px rgba(5, 217, 232, 0.35);
+}
+
+/* Con el menú abierto, las tres rayas forman una X */
+.btn-menu.abierto span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.btn-menu.abierto span:nth-child(2) {
+  opacity: 0;
+}
+
+.btn-menu.abierto span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ==========================================
+   TABLET Y CELULAR (MENÚ PLEGABLE)
+   ========================================== */
+@media (max-width: 768px) {
+  header {
+    padding: 0.7rem 1rem;
+  }
+
+  header img {
+    max-height: 40px;
+  }
+
+  .btn-menu {
+    display: flex;
+  }
+
+  /* El menú baja desde el header y se oculta cuando tiene max-height 0 */
+  header nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #15082b;
+    border-bottom: 2px solid #ff2a8d;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  header nav.menu-abierto {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.9rem 1rem 1.1rem;
+  }
+
+  nav ul li {
+    width: 100%;
+  }
+
+  /* Cada enlace ocupa toda la fila: es más fácil de tocar con el dedo */
+  nav a,
+  nav a.btn-sesion {
+    display: block;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* ==========================================
+   CELULAR (PANTALLAS PEQUEÑAS)
+   ========================================== */
+@media (max-width: 600px) {
+  /* --- Portada (hero) --- */
+  #inicio {
+    min-height: auto;
+    padding: 2.5rem 1rem;
+    gap: 1.6rem;
+  }
+
+  #inicio h1 {
+    font-size: 2rem;
+  }
+
+  #inicio h1 span {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  #inicio p {
+    font-size: 1rem;
+  }
+
+  .cta-inicio {
+    gap: 0.7rem;
+  }
+
+  .stats-inicio {
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+  }
+
+  .stats-inicio li {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .tarjeta-lateral img {
+    height: 120px;
+  }
+
+  /* --- Catálogo --- */
+  #catalogo {
+    padding: 2.5rem 1rem;
+  }
+
+  /* Sin left/transform: así un título largo nunca se sale de la pantalla */
+  #catalogo h2 {
+    display: block;
+    left: auto;
+    transform: none;
+    text-align: center;
+    font-size: 1.8rem;
+  }
+
+  #catalogo>p {
+    font-size: 1rem;
+  }
+
+  #catalogo.bloqueado .aviso-catalogo {
+    padding: 1.4rem 1rem;
+  }
+
+  .combos-catalogo>h3,
+  .categoria-catalogo h3 {
+    font-size: 1.25rem;
+    margin: 1.6rem 0 1rem 0;
+  }
+
+  .combos-catalogo>h3 {
+    margin: 1rem 0 0.8rem 0;
+  }
+
+  .titulo-filtros {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    margin: 2rem auto 1.2rem;
+  }
+
+  .filtros-catalogo {
+    gap: 0.6rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .filtro-btn {
+    padding: 0.6rem 1.3rem;
+    font-size: 0.95rem;
+  }
+
+  /* Una tarjeta por fila: se lee mejor en el celular */
+  .grid-tarjetas,
+  .combos-catalogo #grid-combos {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .grid-tarjetas article,
+  .combos-catalogo .tarjeta-seleccion {
+    padding: 1.2rem 1rem;
+  }
+
+  /* --- Salón de estaciones de PC / consola --- */
+  .grid-estaciones {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1.2rem 0.8rem;
+    padding: 1.2rem 0.6rem;
+  }
+
+  .estacion-gamer {
+    width: 96px;
+  }
+
+  .estacion-gamer:hover {
+    transform: none;
+  }
+
+  .monitor-icon {
+    width: 84px;
+    height: 68px;
+  }
+
+  .pantalla {
+    height: 58px;
+  }
+
+  .num-pc {
+    font-size: 1.3rem;
+  }
+
+  /* En el celular la ficha de la estación se abre como una hoja fija
+     abajo, así nunca se sale de la pantalla. */
+  .info-desplegable {
+    position: fixed;
+    top: auto;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    transform: none;
+    z-index: 1200;
+  }
+
+  .estacion-gamer.desplegada .info-desplegable {
+    animation: none;
+  }
+
+  /* --- Panel de reserva de cada categoría --- */
+  .panel-reserva {
+    padding: 1.4rem 1rem;
+  }
+
+  .btn-confirmar {
+    width: 100%;
+    padding: 0.9rem 1rem;
+  }
+
+  /* --- Formularios y títulos de las demás páginas --- */
+  #contacto,
+  #administrador,
+  #pago,
+  #sesion {
+    padding: 2.5rem 1rem;
+  }
+
+  #contacto h2,
+  #administrador h2,
+  #pago h2,
+  #sesion h2 {
+    font-size: 1.7rem;
+  }
+
+  #form-contacto,
+  #form-login,
+  #form-pago,
+  #form-usuario-login,
+  #form-usuario-registro,
+  #sesion-activa {
+    padding: 1.6rem 1.1rem;
+  }
+
+  #pago-resumen {
+    padding: 1.3rem 1rem;
+  }
+
+  /* --- Panel del administrador --- */
+  .admin-encabezado h3 {
+    font-size: 1.4rem;
+  }
+
+  .admin-tabs {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-tab {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .admin-tarjeta {
+    padding: 1rem;
+  }
+
+  /* --- Historial de compras de Mi Cuenta --- */
+  .compra-tarjeta {
+    padding: 0.9rem 1rem;
+  }
+
+  .compra-items li {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .compra-pie {
+    flex-wrap: wrap;
+  }
+
+  /* --- Pie de página --- */
+  .pie-contenido {
+    padding: 2rem 1.1rem 1.5rem;
+    gap: 1.6rem;
+  }
+
+  .pie-inferior {
+    padding: 1rem 1.1rem;
+  }
+}

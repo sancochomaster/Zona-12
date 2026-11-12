@@ -13,10 +13,16 @@ const PUERTO = process.env.PORT || 4000;
 // Permite leer JSON en el cuerpo de las peticiones (las de la API)
 app.use(express.json());
 
-// Permite que el frontend de React (Vite, localhost:5173) consulte la API
-app.use(cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173']
-}));
+// Orígenes autorizados para consultar la API: el frontend en local (Vite) y el
+// sitio publicado en GitHub Pages. Se puede sumar otro dominio con FRONTEND_URL.
+const origenesPermitidos = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://sancochomaster.github.io',
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({ origin: origenesPermitidos }));
 
 // Cifra una contraseña para no guardarla en texto plano
 const cifrar = (texto) => crypto.createHash('sha256').update(texto).digest('hex');
@@ -132,9 +138,11 @@ app.post('/api/usuarios/login', async (req, res) => {
     }
 });
 
-// Conectamos la base de datos y luego levantamos el servidor
-conectarDB().then(() => {
-    app.listen(PUERTO, () => {
-        console.log(`Servidor Zona 12 corriendo en http://localhost:${PUERTO}`);
-    });
+// Levantamos el servidor primero y luego conectamos la base de datos: así Render
+// detecta el puerto abierto de inmediato y no falla por "port scan timeout"
+// cuando MongoDB tarda en responder.
+app.listen(PUERTO, () => {
+    console.log(`Servidor Zona 12 corriendo en http://localhost:${PUERTO}`);
 });
+
+conectarDB();
